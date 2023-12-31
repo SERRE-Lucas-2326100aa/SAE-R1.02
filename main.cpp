@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
-#include <iomanip>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <thread>
+#include <cstring>
 
 
 #define FPS_LIMIT 60
@@ -13,23 +13,19 @@ using namespace std;
 
 #include "MinGL2_IUT_AIX/include/mingl/mingl.h"
 
+#include "hdrs/globals.h"
+
 
 void clearScreen () {
     cout << "\033[H\033[2J";
 }
 
 const unsigned KReset   (0);
-const unsigned KNoir    (30);
 const unsigned KRouge   (31);
 const unsigned KVert    (32);
 const unsigned KJaune   (33);
 const unsigned KBleu    (34);
-const unsigned KMAgenta (35);
 const unsigned KCyan    (36);
-const unsigned KBGNoir    (40);
-const unsigned KBGRouge   (41);
-const unsigned KGBBleu    (44);
-const unsigned KBGCyan    (46);
 
 void couleur (const unsigned & coul) {
     cout << "\033[" << coul <<"m";
@@ -438,6 +434,7 @@ int ppalExo03 (){
 }
 
 int ppalExo04 (){
+
     CMatrice mat;
     initMat(mat);
     // affichage de la matrice sans les numéros de lignes / colonnes en haut / à gauche
@@ -463,29 +460,52 @@ int ppalExo04 (){
 }
 
 
-int main() {
 
-    nsGraphics::Vec2D win_size(720,720);
+
+
+
+bool glob_blob::is_dev = false;
+
+int main(int argc, char* argv[])
+{
+    if (argc == 2 && strcmp(argv[1], "dev") == 0)
+    {
+        std::cout << argv[0] << std::endl;
+        glob_blob::is_dev = true;
+    }
+
+    nsGraphics::Vec2D win_size = {720,720};
+    nsGraphics::Vec2D win_pos = {128,128};
+
     //MinGL window("Number Crush", win_size, {128,128}, nsGraphics::KBlack);
-    MinGL window("00 - Boilerplate", nsGraphics::Vec2D(640, 640), nsGraphics::Vec2D(128, 128), nsGraphics::KBlack);
+    MinGL window("Number Crush", win_size, win_pos, nsGraphics::KBlack);
+
+    //glob_blob::main_window = window;
+
+
     window.initGlut();
     window.initGraphic();
 
-    // Variable qui tient le temps de frame
-    chrono::microseconds frameTime = chrono::microseconds::zero();
 
-    // On fait tourner la boucle tant que la fenêtre est ouverte
+    nsTransition::TransitionEngine tr_engine;
+
+    // Variable qui tient le temps de frame
+    chrono::microseconds delta_time = chrono::microseconds::zero();
+
     while (window.isOpen())
     {
-        // Récupère l'heure actuelle
-        chrono::time_point<chrono::steady_clock> start = chrono::steady_clock::now();
+        chrono::time_point<chrono::steady_clock> frame_start = chrono::steady_clock::now();
 
-        // On efface la fenêtre
         window.clearScreen();
 
         /*
          * Ici, écrivez votre logique d'affichage et de gestion des évènements
          */
+        level_manager::dev_mode_draw(window,tr_engine, delta_time);
+        //level_manager::mouse_events(window);
+
+
+        tr_engine.update(delta_time);
 
         // On finit la frame en cours
         window.finishFrame();
@@ -494,14 +514,9 @@ int main() {
         window.getEventManager().clearEvents();
 
         // On attend un peu pour limiter le framerate et soulager le CPU
-        this_thread::sleep_for(chrono::milliseconds(1000 / FPS_LIMIT) - chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start));
+        this_thread::sleep_for(chrono::milliseconds(1000 / FPS_LIMIT) - chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - frame_start));
 
         // On récupère le temps de frame
-        frameTime = chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start);
+        delta_time = chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - frame_start);
     }
-
-
-
-
-    //return ppalExo03();
 }
