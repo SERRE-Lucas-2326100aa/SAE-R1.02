@@ -461,10 +461,46 @@ int ppalExo04 (){
 
 
 
-
+/*
+ * Global variables shared across multiple cpp files
+ **/
 
 
 bool glob_blob::is_dev = false;
+cursor_state glob_blob::cursor {0,0,0,0,false};
+VLevels glob_blob::levels {};
+
+
+void mouse_events(MinGL& window)
+{
+    // On vérifie chaque évènement de la queue d'évènements
+    while (window.getEventManager().hasEvent())
+    {
+        const nsEvent::Event_t actualEvent = window.getEventManager().pullEvent();
+        // On regarde le type d'évènement
+        switch (actualEvent.eventType)
+        {
+        case nsEvent::EventType_t::MouseMove:
+            // Il s'agit d'un mouvement de souris
+            glob_blob::cursor.x = actualEvent.eventData.moveData.x;
+            glob_blob::cursor.y = actualEvent.eventData.moveData.y;
+            break;
+
+        case nsEvent::EventType_t::MouseClick:
+            // Il s'agit d'un click de souris
+            glob_blob::cursor.last_click_x = actualEvent.eventData.clickData.x;
+            glob_blob::cursor.last_click_y = actualEvent.eventData.clickData.y;
+            glob_blob::cursor.is_clicking = !actualEvent.eventData.clickData.state;
+            break;
+
+        default:
+            // L'évènement ne nous intéresse pas
+            break;
+        }
+    }
+}
+
+
 
 int main(int argc, char* argv[])
 {
@@ -474,7 +510,7 @@ int main(int argc, char* argv[])
         glob_blob::is_dev = true;
     }
 
-    nsGraphics::Vec2D win_size = {720,720};
+    nsGraphics::Vec2D win_size = {1080,720};
     nsGraphics::Vec2D win_pos = {128,128};
 
     //MinGL window("Number Crush", win_size, {128,128}, nsGraphics::KBlack);
@@ -482,9 +518,10 @@ int main(int argc, char* argv[])
 
     //glob_blob::main_window = window;
 
-
     window.initGlut();
     window.initGraphic();
+
+    glob_blob::levels = level_manager::load_levels("levels");
 
 
     nsTransition::TransitionEngine tr_engine;
@@ -501,17 +538,19 @@ int main(int argc, char* argv[])
         /*
          * Ici, écrivez votre logique d'affichage et de gestion des évènements
          */
+        mouse_events(window);
+
         level_manager::dev_mode_draw(window,tr_engine, delta_time);
         //level_manager::mouse_events(window);
 
 
-        tr_engine.update(delta_time);
+        //tr_engine.update(delta_time);
 
         // On finit la frame en cours
         window.finishFrame();
 
         // On vide la queue d'évènements
-        window.getEventManager().clearEvents();
+        //window.getEventManager().clearEvents();
 
         // On attend un peu pour limiter le framerate et soulager le CPU
         this_thread::sleep_for(chrono::milliseconds(1000 / FPS_LIMIT) - chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - frame_start));

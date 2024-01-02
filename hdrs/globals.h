@@ -3,6 +3,22 @@
 #include "mingl/mingl.h"
 #include "utils.h"
 #include "level_manager.h"
+#include <map>
+
+
+enum GameState
+{
+    MAIN_MENU = 0,
+    IN_LEVEL,
+    IN_EDITOR
+};
+
+struct cursor_state
+{
+    int x,y;
+    int last_click_x, last_click_y;
+    bool is_clicking;
+};
 
 namespace glob_blob
 {
@@ -14,6 +30,8 @@ namespace glob_blob
 
     //ui configs
     extern nsGraphics::Vec2D win_size;
+    extern cursor_state cursor;
+    extern GameState menu_state;
 
 
     static unsigned int current_level = 0;
@@ -22,8 +40,9 @@ namespace glob_blob
 
 
     extern CMatrice current_game;
-    extern CLevels levels;
+    extern VLevels levels;
     extern MinGL& main_window;
+    //extern std::map<std::string, Button> buttons;
 
 }
 

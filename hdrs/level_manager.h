@@ -13,12 +13,20 @@
 #include "utils.h"
 
 
-struct level
+struct Level
 {
     unsigned int lvl_num;
     unsigned int required_points;
-    char* background_image_path;
     bool locked;
+    bool is_fully_loaded;
+    std::string path;
+    CMatrice mat;
+};
+
+struct GameSave
+{
+    unsigned int current_level;
+    unsigned long max_points;
 };
 
 
@@ -40,15 +48,14 @@ struct BonBon
     BonBon_T type;
 };
 
-using CLevels = std::vector<level>;
+using VLevels = std::vector<Level>;
 using nsTransition::TransitionEngine;
 
 namespace level_manager
 {
-    void mouse_events(MinGL& window);
     void dev_mode_draw(MinGL& window, TransitionEngine& engine, std::chrono::microseconds);
-    CMatrice load_level(unsigned int level);
-    CLevels load_levels(const char* game_path);
+    Level load_level(const char* level_path, bool full_load);
+    VLevels load_levels(const char* levels_path);
     void start_game();
 }
 

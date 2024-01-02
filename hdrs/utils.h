@@ -30,7 +30,7 @@ public:
         is_pressed = is_press;
     }
 
-    bool is_in(int x, int y)
+    bool is_in(int x, int y) const
     {
         if (x >= first_pos.getX() && x <= second_pos.getX() && y >= first_pos.getY() && y <= second_pos.getY())
             return true;
@@ -41,6 +41,7 @@ private:
     bool is_hovered, is_pressed;
     nsGraphics::Vec2D first_pos;
     nsGraphics::Vec2D second_pos;
+    std::string text_content;
 };
 
 
