@@ -6,7 +6,7 @@
 #include <map>
 
 
-enum GameState
+enum class GameState
 {
     MAIN_MENU = 0,
     IN_LEVEL,
@@ -31,16 +31,17 @@ namespace glob_blob
     //ui configs
     extern nsGraphics::Vec2D win_size;
     extern cursor_state cursor;
+    extern cursor_state last_cursor_state;
     extern GameState menu_state;
+    extern std::map<std::string, Button> buttons;
 
-
-    static unsigned int current_level = 0;
+    extern std::chrono::microseconds delta_time;
     static unsigned int points = 0;
     static unsigned int lives = 3;
 
-
+    extern std::string current_level;
     extern CMatrice current_game;
-    extern VLevels levels;
+    extern MLevels levels;
     extern MinGL& main_window;
     //extern std::map<std::string, Button> buttons;
 

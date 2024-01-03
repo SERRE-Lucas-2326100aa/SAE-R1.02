@@ -75,18 +75,18 @@ Level level_manager::load_level(const char* level_path, bool fully_load)
 };
 
 
-void show_loaded_levels(VLevels& levels)
+void show_loaded_levels(MLevels& levels)
 {
     for (const auto& lvl : levels)
     {
-        std::cout << lvl.path << std::endl;
+        std::cout << lvl.second.path << std::endl;
     }
 }
 
 
-VLevels level_manager::load_levels(const char* levels_path)
+MLevels level_manager::load_levels(const char* levels_path)
 {
-    VLevels level_vector{};
+    MLevels level_maps;
 
     path game_path = std::filesystem::current_path();
     game_path.append(levels_path);
@@ -96,19 +96,19 @@ VLevels level_manager::load_levels(const char* levels_path)
     if (!path_exists)
     {
         std::filesystem::create_directory(game_path);
-        return level_vector;
+        return level_maps;
     }
 
     for (const auto& entry : std::filesystem::directory_iterator(game_path))
     {
-        level_vector.push_back(load_level(entry.path().c_str(), false));
+        level_maps[entry.path()] = load_level(entry.path().c_str(), false);
     }
 
-    return level_vector;
+    return level_maps;
 };
 
 
-void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine, microseconds delta_time)
+void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 {
     if (!glob_blob::is_dev)
         return;
@@ -136,9 +136,70 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine, micro
     nsGui::Text main_title({window_size.getX()/2,40},"Number Crush",nsGraphics::KBlack,
                            nsGui::GlutFont::BITMAP_9_BY_15, nsGui::Text::ALIGNH_CENTER);
 
-    Button btn({200,100}, 200, 100, "Niveau 1", nsGraphics::KBlack);
+    switch (glob_blob::menu_state)
+    {
+    case GameState::MAIN_MENU:
+    {
+        Button btn({200,100}, 200, 100, "Niveau 1", nsGraphics::KBlack);
 
-    window << main_title << btn;
+        btn.on_click = [](){
+            std::cout << "yeah changing this shit" << std::endl;
+
+            glob_blob::current_level = "/home/def/Desktop/SAE-R1.02/build/levels/nivo_un_jecrois.txt";
+            glob_blob::levels[glob_blob::current_level] = load_level(glob_blob::current_level.c_str(),true);
+
+            glob_blob::menu_state = GameState::IN_LEVEL;
+            glutSetCursor(GLUT_CURSOR_INHERIT);
+        };
+
+        glob_blob::buttons.insert({"lvl1", btn});
+        window << btn;
+        break;
+    }
+    case GameState::IN_LEVEL:
+    {
+        auto lvl = (*glob_blob::levels.find(glob_blob::current_level)).second;
+
+        //std::cout << lvl.lvl_num << std::endl;
+
+        // draw board
+        std::cout << lvl.mat.size() << std::endl;
+
+        CMatrice& mat = lvl.mat; // alias
+
+        int cell_size = 42;
+        int margin = 4;
+        int total_cell_size = cell_size + margin;
+
+        unsigned int num_rows = mat.size();
+        unsigned int num_cols = mat[0].size();
+
+        nsGraphics::Vec2D board_top_left = {300 +(window_size.getX() - 640) /2.f - (2 * total_cell_size)/2.f, (window_size.getY()/2.f) - 200 };
+
+        // Dessigne les lignes verticaux
+        for (unsigned int i = 0; i <= num_cols; ++i)
+        {
+            //nsShape::Line l({board_top_left.getX(), board_top_left.getY() + (i*total_cell_size)},
+            //              {board_top_left.getX(),})
+
+            int line = board_top_left.getX() + (i*total_cell_size);
+            nsShape::Line l({line, board_top_left.getY()},
+                            {line, board_top_left.getY() + (5*total_cell_size)},
+                            nsGraphics::KRed);
+
+            window << l;
+        }
+
+
+        break;
+    }
+    case GameState::IN_EDITOR:
+        break;
+    };
+
+    window << main_title;
+
+
 };
 
 

@@ -1,5 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
+#include <functional>
 #include <vector>
 #include "mingl/graphics/idrawable.h"
 #include "mingl/shape/shape.h"
@@ -20,16 +21,6 @@ public:
 
     virtual void draw(MinGL& window) const override;
 
-    void set_hover(bool is_hov)
-    {
-        is_hovered = is_hov;
-    }
-
-    void set_pressed(bool is_press)
-    {
-        is_pressed = is_press;
-    }
-
     bool is_in(int x, int y) const
     {
         if (x >= first_pos.getX() && x <= second_pos.getX() && y >= first_pos.getY() && y <= second_pos.getY())
@@ -37,8 +28,9 @@ public:
         return false;
     };
 
+    std::function<void()> on_click;
+
 private:
-    bool is_hovered, is_pressed;
     nsGraphics::Vec2D first_pos;
     nsGraphics::Vec2D second_pos;
     std::string text_content;

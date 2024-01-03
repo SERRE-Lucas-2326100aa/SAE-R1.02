@@ -12,7 +12,9 @@ Button::Button(const nsGraphics::Vec2D& position, const unsigned int& width,
 void Button::draw(MinGL& window) const
 {
     // On règle la couleur du rectangle
-    nsGraphics::RGBAcolor inColor = getFillColor();
+    nsGraphics::RGBAcolor inColor = (is_in(glob_blob::cursor.x,glob_blob::cursor.y))
+                                        ? nsGraphics::RGBAcolor{173,216,230,255} : getFillColor();
+
     glColor4ub(inColor.getRed(), inColor.getGreen(), inColor.getBlue(), inColor.getAlpha());
 
     // Affiche un rectangle via la routine OpenGL
@@ -41,16 +43,13 @@ void Button::draw(MinGL& window) const
     if (is_in(glob_blob::cursor.x,glob_blob::cursor.y))
     {
         glutSetCursor(GLUT_CURSOR_INFO);
-        // hover change color maybe
-        inColor = {173,216,230, 255};
-
     }
     else
     {
         glutSetCursor(GLUT_CURSOR_INHERIT);
     }
 
-    std::cout << glob_blob::cursor.is_clicking << std::endl;
+    //std::cout << glob_blob::cursor.is_clicking << std::endl;
 
     window << txt;
 };

@@ -34,6 +34,8 @@ struct GameSave
 enum class BonBon_T : unsigned int
 {
     Ignore = 0,
+    NoDraw,
+    Block,
     NormalBleu,
     NormalVert,
     NormalRouge,
@@ -44,18 +46,17 @@ enum class BonBon_T : unsigned int
 
 struct BonBon
 {
-    bool is_frozen;
     BonBon_T type;
 };
 
-using VLevels = std::vector<Level>;
+using MLevels = std::map<std::string,Level>;
 using nsTransition::TransitionEngine;
 
 namespace level_manager
 {
-    void dev_mode_draw(MinGL& window, TransitionEngine& engine, std::chrono::microseconds);
+    void dev_mode_draw(MinGL& window, TransitionEngine& engine);
     Level load_level(const char* level_path, bool full_load);
-    VLevels load_levels(const char* levels_path);
+    MLevels load_levels(const char* levels_path);
     void start_game();
 }
 

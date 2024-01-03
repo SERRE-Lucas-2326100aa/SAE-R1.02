@@ -40,8 +40,8 @@ void couleur (const unsigned & coul) {
 */
 
 typedef unsigned short contenueDUneCase;
-typedef vector <contenueDUneCase> CVLigne; // un type représentant une ligne de la grille
-typedef vector <CVLigne> CMatrice; // un type représentant la grille
+//typedef vector <contenueDUneCase> CVLigne; // un type représentant une ligne de la grille
+//typedef vector <CVLigne> CMatrice; // un type représentant la grille
 
 const contenueDUneCase KAIgnorer = 0;
 const contenueDUneCase KPlusGrandNombreDansLaMatrice = 4;
@@ -467,9 +467,12 @@ int ppalExo04 (){
 
 
 bool glob_blob::is_dev = false;
+GameState glob_blob::menu_state;
+std::map<std::string, Button> glob_blob::buttons;
 cursor_state glob_blob::cursor {0,0,0,0,false};
-VLevels glob_blob::levels {};
-
+std::string glob_blob::current_level;
+MLevels glob_blob::levels;
+chrono::microseconds glob_blob::delta_time;
 
 void mouse_events(MinGL& window)
 {
@@ -490,7 +493,23 @@ void mouse_events(MinGL& window)
             // Il s'agit d'un click de souris
             glob_blob::cursor.last_click_x = actualEvent.eventData.clickData.x;
             glob_blob::cursor.last_click_y = actualEvent.eventData.clickData.y;
-            glob_blob::cursor.is_clicking = !actualEvent.eventData.clickData.state;
+            glob_blob::cursor.is_clicking = actualEvent.eventData.clickData.state == 0;
+
+            if (glob_blob::cursor.is_clicking == 0 && actualEvent.eventData.clickData.state == 1)
+            {
+                if (glob_blob::menu_state == GameState::MAIN_MENU)
+                {
+                    std::map<std::string, Button>::iterator it;
+                    for (it = glob_blob::buttons.begin(); it != glob_blob::buttons.end(); ++it)
+                    {
+                        Button& btn = it->second;
+                        if (btn.is_in(glob_blob::cursor.x, glob_blob::cursor.y))
+                        {
+                            btn.on_click();
+                        }
+                    }
+                }
+            }
             break;
 
         default:
@@ -522,12 +541,12 @@ int main(int argc, char* argv[])
     window.initGraphic();
 
     glob_blob::levels = level_manager::load_levels("levels");
-
+    glob_blob::menu_state = GameState::MAIN_MENU;
 
     nsTransition::TransitionEngine tr_engine;
 
     // Variable qui tient le temps de frame
-    chrono::microseconds delta_time = chrono::microseconds::zero();
+    glob_blob::delta_time = chrono::microseconds::zero();
 
     while (window.isOpen())
     {
@@ -540,9 +559,7 @@ int main(int argc, char* argv[])
          */
         mouse_events(window);
 
-        level_manager::dev_mode_draw(window,tr_engine, delta_time);
-        //level_manager::mouse_events(window);
-
+        level_manager::dev_mode_draw(window,tr_engine);
 
         //tr_engine.update(delta_time);
 
@@ -556,6 +573,6 @@ int main(int argc, char* argv[])
         this_thread::sleep_for(chrono::milliseconds(1000 / FPS_LIMIT) - chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - frame_start));
 
         // On récupère le temps de frame
-        delta_time = chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - frame_start);
+        glob_blob::delta_time = chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - frame_start);
     }
 }
