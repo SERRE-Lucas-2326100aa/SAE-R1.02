@@ -9,6 +9,7 @@
 enum class GameState
 {
     MAIN_MENU = 0,
+    IN_TUTORIAL,
     IN_LEVEL,
     IN_EDITOR
 };
@@ -17,6 +18,7 @@ struct cursor_state
 {
     int x,y;
     int last_click_x, last_click_y;
+    int click_count;
     bool is_clicking;
 };
 
@@ -31,13 +33,17 @@ namespace glob_blob
     //ui configs
     extern nsGraphics::Vec2D win_size;
     extern cursor_state cursor;
-    extern cursor_state last_cursor_state;
+
     extern GameState menu_state;
     extern std::map<std::string, Button> buttons;
 
     extern std::chrono::microseconds delta_time;
-    static unsigned int points = 0;
-    static unsigned int lives = 3;
+
+    // in game info
+    extern unsigned int current_points;
+    extern unsigned int moves;
+    extern int first_selected_row, first_selected_column;
+
 
     extern std::string current_level;
     extern CMatrice current_game;

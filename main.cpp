@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <stdio.h>
-#include <stdlib.h>
 #include <iostream>
 #include <thread>
 #include <cstring>
@@ -469,7 +468,10 @@ int ppalExo04 (){
 bool glob_blob::is_dev = false;
 GameState glob_blob::menu_state;
 std::map<std::string, Button> glob_blob::buttons;
-cursor_state glob_blob::cursor {0,0,0,0,false};
+cursor_state glob_blob::cursor {0,0,-1,-1,0,false};
+
+int glob_blob::first_selected_row = -1;
+int glob_blob::first_selected_column = -1;
 std::string glob_blob::current_level;
 MLevels glob_blob::levels;
 chrono::microseconds glob_blob::delta_time;
@@ -491,10 +493,9 @@ void mouse_events(MinGL& window)
 
         case nsEvent::EventType_t::MouseClick:
             // Il s'agit d'un click de souris
-            glob_blob::cursor.last_click_x = actualEvent.eventData.clickData.x;
-            glob_blob::cursor.last_click_y = actualEvent.eventData.clickData.y;
             glob_blob::cursor.is_clicking = actualEvent.eventData.clickData.state == 0;
 
+            // on vient de cliquer
             if (glob_blob::cursor.is_clicking == 0 && actualEvent.eventData.clickData.state == 1)
             {
                 if (glob_blob::menu_state == GameState::MAIN_MENU)
@@ -508,7 +509,80 @@ void mouse_events(MinGL& window)
                             btn.on_click();
                         }
                     }
+                } else if (glob_blob::menu_state == GameState::IN_LEVEL)
+                {
+                    nsGraphics::Vec2D window_size = window.getWindowSize();
+                    Level lvl = (*glob_blob::levels.find(glob_blob::current_level)).second;
+                    int cell_size = 32;
+                    int margin = 2;
+                    float dpi = 1.5f;
+                    int total_cell_size = cell_size + margin;
+
+                    int num_rows = (glob_blob::levels[glob_blob::current_level]).mat.size();
+                    int num_cols = (glob_blob::levels[glob_blob::current_level]).mat[0].size();
+
+                    nsGraphics::Vec2D board_top_left = {(window_size.getX() /2.f) - (4 * total_cell_size), (window_size.getY()/4.f)};
+                    nsGraphics::Vec2D board_bottom_right = {board_top_left.getX() + dpi*(num_cols * total_cell_size), board_top_left.getY() + dpi*(num_rows *total_cell_size)};
+
+
+                    // if click inside the board
+                    if (glob_blob::cursor.x >= board_top_left.getX() && glob_blob::cursor.x <= board_bottom_right.getX() &&
+                        glob_blob::cursor.y >= board_top_left.getY() && glob_blob::cursor.y <= board_bottom_right.getY())
+                    {
+                        glob_blob::cursor.click_count++;
+                        std::cout << " after " << glob_blob::cursor.click_count << std::endl;
+
+                        int clicked_col = (glob_blob::cursor.x- margin*4 - board_top_left.getX()) / (dpi *total_cell_size);
+                        int clicked_row = (glob_blob::cursor.y- margin*4 - board_top_left.getY()) / (dpi * total_cell_size);
+
+
+
+                        if (glob_blob::cursor.click_count == 2 &&
+                            (std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1))
+                            //&& (std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1))
+                        {
+                            if ((glob_blob::first_selected_column == clicked_col || glob_blob::first_selected_row == clicked_row)) // on compte le clique pas en diagonale
+                            {
+                                std::cout << "not diagonal " << std::endl;
+                            }
+                            glob_blob::cursor.click_count = 0;
+                            glob_blob::first_selected_column = -1;
+                            glob_blob::first_selected_row = -1;
+                        }
+
+
+
+                        if (glob_blob::cursor.click_count == 1)
+                        {
+                            int col = (glob_blob::cursor.x- margin*4 - board_top_left.getX()) / (dpi *total_cell_size);
+                            int row = (glob_blob::cursor.y- margin*4 - board_top_left.getY()) / (dpi * total_cell_size);
+                            glob_blob::first_selected_column = col;
+                            glob_blob::first_selected_row = row;
+                        }
+
+
+
+                        // get last one
+
+
+                        /*if (glob_blob::cursor.last_click_x != -1 && glob_blob::cursor.last_click_y != -1)
+                        {
+                            int col_last = (glob_blob::cursor.last_click_x- margin*4 - board_top_left.getX()) / (dpi *total_cell_size);
+                            int row_last = (glob_blob::cursor.last_click_y- margin*4 - board_top_left.getY()) / (dpi * total_cell_size);
+                            std::cout << "col_last: " << col_last << " row_last: " << row_last << std::endl;
+                        }*/
+
+                    }
+                    else // en dehors du jeu
+                    {
+                        glob_blob::cursor.click_count = 0;
+                        glob_blob::first_selected_column = -1;
+                        glob_blob::first_selected_row = -1;
+                    }
                 }
+
+                glob_blob::cursor.last_click_x = actualEvent.eventData.clickData.x;
+                glob_blob::cursor.last_click_y = actualEvent.eventData.clickData.y;
             }
             break;
 
@@ -539,6 +613,8 @@ int main(int argc, char* argv[])
 
     window.initGlut();
     window.initGraphic();
+
+    glutFullScreenToggle();
 
     glob_blob::levels = level_manager::load_levels("levels");
     glob_blob::menu_state = GameState::MAIN_MENU;

@@ -1,8 +1,8 @@
 #include "hdrs/globals.h"
 #include "hdrs/utils.h"
 
-Button::Button(const nsGraphics::Vec2D& position, const unsigned int& width,
-               const unsigned int& height, const std::string& content, const nsGraphics::RGBAcolor& fill_col,
+Button::Button(const nsGraphics::Vec2D& position, const int& width,
+               const int& height, const std::string& content, const nsGraphics::RGBAcolor& fill_col,
                const nsGraphics::RGBAcolor& border_col) : Shape(fill_col, border_col)
       {
         first_pos = position;

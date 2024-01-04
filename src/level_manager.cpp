@@ -16,6 +16,7 @@
 #include "mingl/gui/text.h"
 #include <filesystem>
 #include <fstream>
+#include <mingl/shape/circle.h>
 using std::chrono::microseconds, std::filesystem::path;
 
 Level level_manager::load_level(const char* level_path, bool fully_load)
@@ -158,37 +159,72 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
     }
     case GameState::IN_LEVEL:
     {
-        auto lvl = (*glob_blob::levels.find(glob_blob::current_level)).second;
+        Level lvl = (*glob_blob::levels.find(glob_blob::current_level)).second;
 
         //std::cout << lvl.lvl_num << std::endl;
 
         // draw board
-        std::cout << lvl.mat.size() << std::endl;
+        //std::cout << lvl.mat.size() << std::endl;
 
         CMatrice& mat = lvl.mat; // alias
 
-        int cell_size = 42;
-        int margin = 4;
+        int cell_size = 32;
+        int margin = 2;
+        float dpi = 1.5f;
         int total_cell_size = cell_size + margin;
 
         unsigned int num_rows = mat.size();
         unsigned int num_cols = mat[0].size();
 
-        nsGraphics::Vec2D board_top_left = {300 +(window_size.getX() - 640) /2.f - (2 * total_cell_size)/2.f, (window_size.getY()/2.f) - 200 };
+        nsGraphics::Vec2D board_top_left = {(window_size.getX() /2.f) - (4 * total_cell_size), (window_size.getY()/4.f)};
+        nsGraphics::Vec2D board_bottom_right = {board_top_left.getX() + dpi*(num_cols * total_cell_size), board_top_left.getY() + dpi*(num_rows *total_cell_size)};
 
-        // Dessigne les lignes verticaux
-        for (unsigned int i = 0; i <= num_cols; ++i)
+        nsShape::Rectangle recttt(board_top_left, board_bottom_right, nsGraphics::KBlack);
+
+        window << recttt;
+
+
+        for (unsigned int row = 0; row < num_rows; ++row)
         {
-            //nsShape::Line l({board_top_left.getX(), board_top_left.getY() + (i*total_cell_size)},
-            //              {board_top_left.getX(),})
+            for (unsigned int col = 0; col < num_cols; ++col)
+            {
+                unsigned short nb = mat[row][col];
 
-            int line = board_top_left.getX() + (i*total_cell_size);
-            nsShape::Line l({line, board_top_left.getY()},
-                            {line, board_top_left.getY() + (5*total_cell_size)},
-                            nsGraphics::KRed);
+                BonBon_T bonbon_type = static_cast<BonBon_T>(nb);
 
-            window << l;
+                int x = board_top_left.getX() + margin * 4 + dpi*(col*total_cell_size);
+                int y = board_top_left.getY() + margin * 4 + dpi*(row*total_cell_size);
+
+                int x_end = x + cell_size;
+                int y_end = y + cell_size;
+
+
+                nsShape::Rectangle rect({x,y},{x_end,y_end}, nsGraphics::KRed);
+
+                if (glob_blob::first_selected_column == col && glob_blob::first_selected_row == row)
+                {
+                    nsShape::Circle cc({x,y}, 5, nsGraphics::KYellow);
+                    window  << cc;
+                }
+
+                switch(nb)
+                {
+                case 1:
+                    rect.setFillColor(nsGraphics::KGreen);
+                    break;
+                case 2:
+                    rect.setFillColor(nsGraphics::KBlue);
+                    break;
+                case 3:
+                    rect.setFillColor(nsGraphics::KRed);
+                    break;
+                }
+
+                window << rect;
+
+            }
         }
+
 
 
         break;

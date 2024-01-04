@@ -13,6 +13,9 @@
 #include "utils.h"
 
 
+struct BonBon; // declaration avancé
+using CMatrice = std::vector<std::vector<unsigned short>>; // grille
+
 struct Level
 {
     unsigned int lvl_num;
@@ -46,7 +49,14 @@ enum class BonBon_T : unsigned int
 
 struct BonBon
 {
+    bool is_selected;
     BonBon_T type;
+
+    friend std::ostream& operator<<(std::ostream& os, const BonBon& b)
+    {
+        os << static_cast<unsigned int>(b.type);
+        return os;
+    };
 };
 
 using MLevels = std::map<std::string,Level>;
