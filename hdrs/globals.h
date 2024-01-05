@@ -35,6 +35,13 @@ namespace glob_blob
     extern cursor_state cursor;
 
     extern GameState menu_state;
+
+
+    inline int cell_size = 32;
+    inline int margin = 2;
+    inline float dpi = 1.5f;
+    inline int total_cell_size = cell_size + margin;
+
     extern std::map<std::string, Button> buttons;
 
     extern std::chrono::microseconds delta_time;

@@ -46,219 +46,17 @@ const contenueDUneCase KAIgnorer = 0;
 const contenueDUneCase KPlusGrandNombreDansLaMatrice = 4;
 
 //initialisation de la grille de jeu
-void initMat (CMatrice & mat, const size_t & nbLignes = 10,
-             const size_t & nbColonnes = 10,
-              const unsigned & nbMax= KPlusGrandNombreDansLaMatrice){
-    mat.resize(nbLignes);
-
-    for (auto& ligne : mat)
-    {
-        ligne.resize(nbColonnes);
-        for (size_t i = 0; i < ligne.size(); ++i)
-        {
-            ligne[i] = (rand() % nbMax)+1;
-        }
-    }
-}
 
 // affichage de la matrice sans les numéros de lignes / colonnes en haut / à gauche
-void  afficheMatriceV0 (const CMatrice & Mat) {
-    cout << string (41, '-') << endl;
-    for (auto& ligne : Mat)
-    {
-        for (size_t col = 0; col < ligne.size(); ++col)
-        {
-            if (col == 0)
-            {
-                couleur(KReset);
-                cout << "|";
-            }
-            switch (ligne[col])
-            {
-                case 0:
-                    break;
-                case 1:
-                {
-                    couleur(KReset);
-                    couleur(KRouge);
-                    cout << " " << ligne[col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-                case 2:
-                {
-                    couleur(KReset);
-                    couleur(KBleu);
-                    cout << " " << ligne[col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-                case 3:
-                {
-                    couleur(KReset);
-                    couleur(KJaune);
-                    cout << " " << ligne[col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-                case 4:
-                {
-                    couleur(KReset);
-                    couleur(KVert);
-                    cout << " " << ligne[col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-            }
-        }
-        cout << endl;
-    }
-    cout << string (41, '-') << endl;
-}
-
 // affichage de la matrice sans les numéros de lignes / colonnes en haut / à gauche, mais avec un fond de couleur
 //pour signifier que la case est a KAIgnorer
-void  afficheMatriceV1 (const CMatrice & Mat) {
-    cout << string (41, '-') << endl;
-    for (auto& ligne : Mat)
-    {
-        for (size_t col = 0; col < ligne.size(); ++col)
-        {
-            if (col == 0)
-            {
-                couleur(KReset);
-                cout << "|";
-            }
-            switch (ligne[col])
-            {
-                case 0:
-                    couleur(KReset);
-                    couleur(KCyan+10);
-                    couleur(KCyan);
-                    cout << " " << ligne[col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                case 1:
-                {
-                    couleur(KReset);
-                    couleur(KRouge);
-                    cout << " " << ligne[col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-                case 2:
-                {
-                    couleur(KReset);
-                    couleur(KBleu);
-                    cout << " " << ligne[col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-                case 3:
-                {
-                    couleur(KReset);
-                    couleur(KJaune);
-                    cout << " " << ligne[col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-                case 4:
-                {
-                    couleur(KReset);
-                    couleur(KVert);
-                    cout << " " << ligne[col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-            }
-        }
-        cout << endl;
-    }
-    cout << string (41, '-') << endl;
-}
-
 
 // affichage de la matrice avec les numéros de lignes / colonnes en haut / à gauche et avec un fond de couleur
 //pour signifier que la case est a KAIgnorer
-void  afficheMatriceV2 (const CMatrice & mat) {
-    cout << "    0   1   2   3   4   5  6   7   8    9" << endl;
-    cout << string (43, '-') << endl;
-    for (size_t ligne = 0; ligne < mat.size(); ++ligne)
-    {
-        for (size_t col = 0; col < mat[ligne].size(); ++col)
-        {
-            if (col == 0)
-            {
-                couleur(KReset);
-                cout << ligne << " |";
-            }
-            switch (mat[ligne][col])
-            {
-                case 0:
-                    couleur(KReset);
-                    couleur(KCyan+10);
-                    couleur(KCyan);
-                    cout << " " << mat[ligne][col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                case 1:
-                {
-                    couleur(KReset);
-                    couleur(KRouge);
-                    cout << " " << mat[ligne][col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-                case 2:
-                {
-                    couleur(KReset);
-                    couleur(KBleu);
-                    cout << " " << mat[ligne][col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-                case 3:
-                {
-                    couleur(KReset);
-                    couleur(KJaune);
-                    cout << " " << mat[ligne][col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-                case 4:
-                {
-                    couleur(KReset);
-                    couleur(KVert);
-                    cout << " " << mat[ligne][col] << " ";
-                    couleur(KReset);
-                    cout << "|";
-                    break;
-                }
-            }
-        }
-        cout << endl;
-    }
-    cout << string (43, '-') << endl;
-}
-
-
 //***********************************************************************************/
 //***********************    R1.01 – Prog#10 Exercice 2   ***************************/
 //***********************************************************************************/
-
+/*
 
 // on remplira cela plus tard, juste la définition de la fonction
 void explositionUneBombeHorizontale (CMatrice & mat, const size_t & numLigne,
@@ -292,10 +90,10 @@ bool detectionExplositionUneBombeVerticale(CMatrice& mat)
                         << "; ligne = " << numLigne
                         << "; sur " << combienALaSuite << " cases" << endl;
                     cout << string (20, '-') << endl << "matrice avant suppresion" << endl;
-                    afficheMatriceV1(mat);
+                    //afficheMatriceV1(mat);
                     explositionUneBombeVerticale (mat, numLigne, numCol, combienALaSuite);
                     cout << string (20, '-') << endl << "matrice après suppresion" << endl;
-                    afficheMatriceV1(mat);
+                    //afficheMatriceV1(mat);
         }
     }
     }
@@ -327,10 +125,10 @@ bool detectionExplositionUneBombeHorizontale (CMatrice & mat){
                              << "; colonne = " << numCol
                              << "; sur  " << combienALaSuite << " cases" << endl;
                         cout << string (20, '-') << endl << "matrice avant suppresion" << endl;
-                        afficheMatriceV1(mat);
+                        //afficheMatriceV1(mat);
                         explositionUneBombeHorizontale (mat, numLigne, numCol, combienALaSuite);
                         cout << string (20, '-') << endl << "matrice après suppresion" << endl;
-                        afficheMatriceV1(mat);
+                        //afficheMatriceV1(mat);
             }
         }
     }
@@ -343,6 +141,7 @@ bool detectionExplositionUneBombeHorizontale (CMatrice & mat){
 //***********************************************************************************/
 
 
+/*
 //fait descendre toutes les cases d'une unité suite à une explosition
 void explositionUneBombeHorizontale (CMatrice & mat, const size_t & numLigne,
                                     const size_t & numColonne, const size_t & combien)
@@ -460,7 +259,6 @@ int ppalExo04 (){
 
 
 
-/*
  * Global variables shared across multiple cpp files
  **/
 
@@ -475,6 +273,16 @@ int glob_blob::first_selected_column = -1;
 std::string glob_blob::current_level;
 MLevels glob_blob::levels;
 chrono::microseconds glob_blob::delta_time;
+
+
+void game_move(CMatrice& mat, int& new_row, int& new_col)
+{
+    if (new_row < 0 || new_col < 0)
+        return;
+
+    swap(mat[glob_blob::first_selected_row][glob_blob::first_selected_column], mat[new_row][new_col]);
+    std::cout << "swapped" << std::endl;
+}
 
 void mouse_events(MinGL& window)
 {
@@ -512,66 +320,64 @@ void mouse_events(MinGL& window)
                 } else if (glob_blob::menu_state == GameState::IN_LEVEL)
                 {
                     nsGraphics::Vec2D window_size = window.getWindowSize();
-                    Level lvl = (*glob_blob::levels.find(glob_blob::current_level)).second;
-                    int cell_size = 32;
-                    int margin = 2;
-                    float dpi = 1.5f;
-                    int total_cell_size = cell_size + margin;
+                    Level& lvl = (*glob_blob::levels.find(glob_blob::current_level)).second;
 
                     int num_rows = (glob_blob::levels[glob_blob::current_level]).mat.size();
                     int num_cols = (glob_blob::levels[glob_blob::current_level]).mat[0].size();
 
-                    nsGraphics::Vec2D board_top_left = {(window_size.getX() /2.f) - (4 * total_cell_size), (window_size.getY()/4.f)};
-                    nsGraphics::Vec2D board_bottom_right = {board_top_left.getX() + dpi*(num_cols * total_cell_size), board_top_left.getY() + dpi*(num_rows *total_cell_size)};
+                    nsGraphics::Vec2D board_top_left = {(window_size.getX() /2.f) - (4 * glob_blob::total_cell_size), (window_size.getY()/4.f)};
+                    nsGraphics::Vec2D board_bottom_right = {board_top_left.getX() + glob_blob::dpi*(num_cols * glob_blob::total_cell_size), board_top_left.getY() + glob_blob::dpi*(num_rows * glob_blob::total_cell_size)};
 
 
+                    auto reset_crusor_clicks = []()
+                    {
+                        glob_blob::cursor.click_count = 0;
+                        glob_blob::first_selected_column = -1;
+                        glob_blob::first_selected_row = -1;
+                    };
                     // if click inside the board
                     if (glob_blob::cursor.x >= board_top_left.getX() && glob_blob::cursor.x <= board_bottom_right.getX() &&
                         glob_blob::cursor.y >= board_top_left.getY() && glob_blob::cursor.y <= board_bottom_right.getY())
                     {
-                        glob_blob::cursor.click_count++;
+                        if (glob_blob::cursor.click_count <= 1 )
+                            glob_blob::cursor.click_count++;
+                        else
+                        {
+                            reset_crusor_clicks();
+                        }
                         std::cout << " after " << glob_blob::cursor.click_count << std::endl;
 
-                        int clicked_col = (glob_blob::cursor.x- margin*4 - board_top_left.getX()) / (dpi *total_cell_size);
-                        int clicked_row = (glob_blob::cursor.y- margin*4 - board_top_left.getY()) / (dpi * total_cell_size);
+                        int clicked_col = (glob_blob::cursor.x- glob_blob::margin*4 - board_top_left.getX()) / (glob_blob::dpi * glob_blob::total_cell_size);
+                        int clicked_row = (glob_blob::cursor.y- glob_blob::margin*4 - board_top_left.getY()) / (glob_blob::dpi * glob_blob::total_cell_size);
 
 
 
-                        if (glob_blob::cursor.click_count == 2 &&
-                            (std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1))
-                            //&& (std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1))
+                        if (glob_blob::cursor.click_count == 2)
+                        //&& (std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1))
                         {
-                            if ((glob_blob::first_selected_column == clicked_col || glob_blob::first_selected_row == clicked_row)) // on compte le clique pas en diagonale
+                            if ((std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1) &&
+                                (glob_blob::first_selected_column == clicked_col || glob_blob::first_selected_row == clicked_row) && // on compte pas le clique en diagonale
+                                (glob_blob::first_selected_column != clicked_col || glob_blob::first_selected_row != clicked_row)) // on compte pas si c'estt le même, on deselectionne
                             {
-                                std::cout << "not diagonal " << std::endl;
+                                std::cout << "not diagonal and good, swapping: " <<
+                                    glob_blob::first_selected_column << "= " << clicked_col << " " <<
+                                    glob_blob::first_selected_row << "= " << clicked_row << std::endl;
+                                game_move(lvl.mat, clicked_row, clicked_col);
+
+
                             }
-                            glob_blob::cursor.click_count = 0;
-                            glob_blob::first_selected_column = -1;
-                            glob_blob::first_selected_row = -1;
-                        }
+                            reset_crusor_clicks();
+                        };
 
 
-
+                        // le premier click
                         if (glob_blob::cursor.click_count == 1)
                         {
-                            int col = (glob_blob::cursor.x- margin*4 - board_top_left.getX()) / (dpi *total_cell_size);
-                            int row = (glob_blob::cursor.y- margin*4 - board_top_left.getY()) / (dpi * total_cell_size);
+                            int col = (glob_blob::cursor.x- glob_blob::margin*4 - board_top_left.getX()) / (glob_blob::dpi * glob_blob::total_cell_size);
+                            int row = (glob_blob::cursor.y- glob_blob::margin*4 - board_top_left.getY()) / (glob_blob::dpi * glob_blob::total_cell_size);
                             glob_blob::first_selected_column = col;
                             glob_blob::first_selected_row = row;
                         }
-
-
-
-                        // get last one
-
-
-                        /*if (glob_blob::cursor.last_click_x != -1 && glob_blob::cursor.last_click_y != -1)
-                        {
-                            int col_last = (glob_blob::cursor.last_click_x- margin*4 - board_top_left.getX()) / (dpi *total_cell_size);
-                            int row_last = (glob_blob::cursor.last_click_y- margin*4 - board_top_left.getY()) / (dpi * total_cell_size);
-                            std::cout << "col_last: " << col_last << " row_last: " << row_last << std::endl;
-                        }*/
-
                     }
                     else // en dehors du jeu
                     {

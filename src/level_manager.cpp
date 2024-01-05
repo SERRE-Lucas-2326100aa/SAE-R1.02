@@ -168,16 +168,11 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 
         CMatrice& mat = lvl.mat; // alias
 
-        int cell_size = 32;
-        int margin = 2;
-        float dpi = 1.5f;
-        int total_cell_size = cell_size + margin;
-
         unsigned int num_rows = mat.size();
         unsigned int num_cols = mat[0].size();
 
-        nsGraphics::Vec2D board_top_left = {(window_size.getX() /2.f) - (4 * total_cell_size), (window_size.getY()/4.f)};
-        nsGraphics::Vec2D board_bottom_right = {board_top_left.getX() + dpi*(num_cols * total_cell_size), board_top_left.getY() + dpi*(num_rows *total_cell_size)};
+        nsGraphics::Vec2D board_top_left = {(window_size.getX() /2.f) - (4 * glob_blob::total_cell_size), (window_size.getY()/4.f)};
+        nsGraphics::Vec2D board_bottom_right = {board_top_left.getX() + glob_blob::dpi*(num_cols * glob_blob::total_cell_size), board_top_left.getY() + glob_blob::dpi*(num_rows * glob_blob::total_cell_size)};
 
         nsShape::Rectangle recttt(board_top_left, board_bottom_right, nsGraphics::KBlack);
 
@@ -192,11 +187,11 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 
                 BonBon_T bonbon_type = static_cast<BonBon_T>(nb);
 
-                int x = board_top_left.getX() + margin * 4 + dpi*(col*total_cell_size);
-                int y = board_top_left.getY() + margin * 4 + dpi*(row*total_cell_size);
+                int x = board_top_left.getX() + glob_blob::margin * 4 + glob_blob::dpi*(col*glob_blob::total_cell_size);
+                int y = board_top_left.getY() + glob_blob::margin * 4 + glob_blob::dpi*(row*glob_blob::total_cell_size);
 
-                int x_end = x + cell_size;
-                int y_end = y + cell_size;
+                int x_end = x + glob_blob::cell_size;
+                int y_end = y + glob_blob::cell_size;
 
 
                 nsShape::Rectangle rect({x,y},{x_end,y_end}, nsGraphics::KRed);
