@@ -15,29 +15,6 @@ using namespace std;
 #include "hdrs/globals.h"
 
 
-void clearScreen () {
-    cout << "\033[H\033[2J";
-}
-
-const unsigned KReset   (0);
-const unsigned KRouge   (31);
-const unsigned KVert    (32);
-const unsigned KJaune   (33);
-const unsigned KBleu    (34);
-const unsigned KCyan    (36);
-
-void couleur (const unsigned & coul) {
-    cout << "\033[" << coul <<"m";
-}
-
-
-//***********************************************************************************/
-//***********************    R1.01 – Prog#10 Exercice 2   ***************************/
-//***********************************************************************************/
-/*
- *
-*/
-
 typedef unsigned short contenueDUneCase;
 //typedef vector <contenueDUneCase> CVLigne; // un type représentant une ligne de la grille
 //typedef vector <CVLigne> CMatrice; // un type représentant la grille
@@ -56,7 +33,6 @@ const contenueDUneCase KPlusGrandNombreDansLaMatrice = 4;
 //***********************************************************************************/
 //***********************    R1.01 – Prog#10 Exercice 2   ***************************/
 //***********************************************************************************/
-/*
 
 // on remplira cela plus tard, juste la définition de la fonction
 void explositionUneBombeHorizontale (CMatrice & mat, const size_t & numLigne,
@@ -98,7 +74,7 @@ bool detectionExplositionUneBombeVerticale(CMatrice& mat)
     }
     }
    return auMoinsUneExplosion;
-}
+};
 
 bool detectionExplositionUneBombeHorizontale (CMatrice & mat){
     bool auMoinsUneExplosion (false);
@@ -134,14 +110,8 @@ bool detectionExplositionUneBombeHorizontale (CMatrice & mat){
     }
     return auMoinsUneExplosion;
     //si on a aun moins 3 chiffres identiques a la suite
-}
+};
 
-//***********************************************************************************/
-//***********************    R1.01 – Prog#10 Exercice 3   ***************************/
-//***********************************************************************************/
-
-
-/*
 //fait descendre toutes les cases d'une unité suite à une explosition
 void explositionUneBombeHorizontale (CMatrice & mat, const size_t & numLigne,
                                     const size_t & numColonne, const size_t & combien)
@@ -169,10 +139,9 @@ void explositionUneBombeVerticale (CMatrice& mat, const size_t& numLigne,const s
             swap(mat[k][numColonne], mat[k-1][numColonne]);
         }
     }
-
-
-
 }
+
+/*
 
 void faitUnMouvement (CMatrice & mat, const char & deplacment, const size_t & numLigne,
                      const size_t & numCol) {

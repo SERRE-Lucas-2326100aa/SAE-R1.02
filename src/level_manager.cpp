@@ -26,7 +26,6 @@ Level level_manager::load_level(const char* level_path, bool fully_load)
     std::ifstream lvl_file(level_path);
     std::cout << "loading " << level_path << std::endl;
 
-
     if (lvl_file.fail())
     {
         throw std::runtime_error("failed to open lvl, gg");
@@ -109,6 +108,10 @@ MLevels level_manager::load_levels(const char* levels_path)
 };
 
 
+bool detectionExplositionUneBombeHorizontale(CMatrice&);
+bool detectionExplositionUneBombeVerticale(CMatrice&); // forward declaration
+
+
 void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 {
     if (!glob_blob::is_dev)
@@ -178,6 +181,9 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 
         window << recttt;
 
+        detectionExplositionUneBombeVerticale(mat);
+        detectionExplositionUneBombeHorizontale(mat);
+
 
         for (unsigned int row = 0; row < num_rows; ++row)
         {
@@ -194,7 +200,7 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                 int y_end = y + glob_blob::cell_size;
 
 
-                nsShape::Rectangle rect({x,y},{x_end,y_end}, nsGraphics::KRed);
+                nsShape::Rectangle rect({x,y},{x_end,y_end}, nsGraphics::KTransparent);
 
                 if (glob_blob::first_selected_column == col && glob_blob::first_selected_row == row)
                 {
@@ -204,6 +210,9 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 
                 switch(nb)
                 {
+                case 0:
+                    rect.setFillColor(nsGraphics::KTransparent);
+                    break;
                 case 1:
                     rect.setFillColor(nsGraphics::KGreen);
                     break;
@@ -212,6 +221,9 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                     break;
                 case 3:
                     rect.setFillColor(nsGraphics::KRed);
+                    break;
+                case 4:
+                    rect.setFillColor(nsGraphics::KYellow);
                     break;
                 }
 
