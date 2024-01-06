@@ -143,49 +143,6 @@ void explositionUneBombeVerticale (CMatrice& mat, const size_t& numLigne,const s
 
 /*
 
-void faitUnMouvement (CMatrice & mat, const char & deplacment, const size_t & numLigne,
-                     const size_t & numCol) {
-
-    int offset_x = 0, offset_y = 0;
-    switch (tolower(deplacment)) {
-    case 'a':
-        offset_x = -1;
-        offset_y = 1;
-        break;
-    case 'z':
-        offset_y = 1;
-        break;
-    case 'e':
-        offset_x = 1;
-        offset_y = 1;
-        break;
-    case 'q':
-        offset_x = -1;
-        break;
-    case 'd':
-        offset_x = 1;
-        break;
-    case 'x':
-        offset_x = -1;
-        offset_y = -1;
-        break;
-    case 'c':
-        offset_y = -1;
-        break;
-    case 'v':
-        offset_y = -1;
-        offset_x = 1;
-        break;
-   //TODO : completer les autres mouvements
-    default:
-        cout<<"Tu choisis A ou Z ou E  ou Q ou D ou X ou C ou V"<<endl;
-        break;
-    }
-    //faire la permutaion entre les 2 cases
-    swap(mat[numLigne][numCol],mat[numLigne+offset_y][numCol+offset_x]);
-}
-
-
 int ppalExo03 (){
     CMatrice mat;
     initMat(mat);
@@ -237,12 +194,30 @@ GameState glob_blob::menu_state;
 std::map<std::string, Button> glob_blob::buttons;
 cursor_state glob_blob::cursor {0,0,-1,-1,0,false};
 
+bool glob_blob::is_swapping = false;
+bool glob_blob::is_swap_horizontal = false;
+bool glob_blob::is_swap_vertical = false;
+
 int glob_blob::first_selected_row = -1;
 int glob_blob::first_selected_column = -1;
+int glob_blob::last_selected_row = -1;
+int glob_blob::last_selected_column = -1;
+
 std::string glob_blob::current_level;
 MLevels glob_blob::levels;
 chrono::microseconds glob_blob::delta_time;
 
+
+
+
+void reset_crusor_clicks()
+{
+    glob_blob::cursor.click_count = 0;
+    glob_blob::first_selected_column = -1;
+    glob_blob::first_selected_row = -1;
+    glob_blob::last_selected_row = -1;
+    glob_blob::last_selected_column = -1;
+};
 
 void game_move(CMatrice& mat, int& new_row, int& new_col)
 {
@@ -250,8 +225,12 @@ void game_move(CMatrice& mat, int& new_row, int& new_col)
         return;
 
     swap(mat[glob_blob::first_selected_row][glob_blob::first_selected_column], mat[new_row][new_col]);
+
     std::cout << "swapped" << std::endl;
+
+    reset_crusor_clicks();
 }
+
 
 void mouse_events(MinGL& window)
 {
@@ -297,13 +276,6 @@ void mouse_events(MinGL& window)
                     nsGraphics::Vec2D board_top_left = {(window_size.getX() /2.f) - (4 * glob_blob::total_cell_size), (window_size.getY()/4.f)};
                     nsGraphics::Vec2D board_bottom_right = {board_top_left.getX() + glob_blob::dpi*(num_cols * glob_blob::total_cell_size), board_top_left.getY() + glob_blob::dpi*(num_rows * glob_blob::total_cell_size)};
 
-
-                    auto reset_crusor_clicks = []()
-                    {
-                        glob_blob::cursor.click_count = 0;
-                        glob_blob::first_selected_column = -1;
-                        glob_blob::first_selected_row = -1;
-                    };
                     // if click inside the board
                     if (glob_blob::cursor.x >= board_top_left.getX() && glob_blob::cursor.x <= board_bottom_right.getX() &&
                         glob_blob::cursor.y >= board_top_left.getY() && glob_blob::cursor.y <= board_bottom_right.getY())
@@ -319,33 +291,42 @@ void mouse_events(MinGL& window)
                         int clicked_col = (glob_blob::cursor.x- glob_blob::margin*4 - board_top_left.getX()) / (glob_blob::dpi * glob_blob::total_cell_size);
                         int clicked_row = (glob_blob::cursor.y- glob_blob::margin*4 - board_top_left.getY()) / (glob_blob::dpi * glob_blob::total_cell_size);
 
-
+                        glob_blob::last_selected_column = clicked_col;
+                        glob_blob::last_selected_row = clicked_row;
 
                         if (glob_blob::cursor.click_count == 2)
                         //&& (std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1))
                         {
-                            if ((std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1) &&
+                            if ((std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1) && // on regarde si la difference entre les 2 cases
                                 (glob_blob::first_selected_column == clicked_col || glob_blob::first_selected_row == clicked_row) && // on compte pas le clique en diagonale
                                 (glob_blob::first_selected_column != clicked_col || glob_blob::first_selected_row != clicked_row)) // on compte pas si c'estt le même, on deselectionne
                             {
                                 std::cout << "not diagonal and good, swapping: " <<
                                     glob_blob::first_selected_column << "= " << clicked_col << " " <<
                                     glob_blob::first_selected_row << "= " << clicked_row << std::endl;
-                                game_move(lvl.mat, clicked_row, clicked_col);
 
+                                glob_blob::is_swapping = true;
+                                glob_blob::is_swap_vertical = ((glob_blob::first_selected_row == clicked_row - 1 ||
+                                                                 glob_blob::first_selected_row == clicked_row + 1) &&
+                                                                 glob_blob::first_selected_column == clicked_col);
 
+                                glob_blob::is_swap_horizontal = ((glob_blob::first_selected_column == clicked_col - 1 ||
+                                                               glob_blob::first_selected_column == clicked_col + 1) &&
+                                                              glob_blob::first_selected_row == clicked_row);
+
+                                std::cout << glob_blob::is_swap_horizontal << glob_blob::is_swap_vertical << std::endl;
+
+                                //game_move(lvl.mat, clicked_row, clicked_col);
                             }
-                            reset_crusor_clicks();
+                            //reset_crusor_clicks();
                         };
 
 
                         // le premier click
                         if (glob_blob::cursor.click_count == 1)
                         {
-                            int col = (glob_blob::cursor.x- glob_blob::margin*4 - board_top_left.getX()) / (glob_blob::dpi * glob_blob::total_cell_size);
-                            int row = (glob_blob::cursor.y- glob_blob::margin*4 - board_top_left.getY()) / (glob_blob::dpi * glob_blob::total_cell_size);
-                            glob_blob::first_selected_column = col;
-                            glob_blob::first_selected_row = row;
+                            glob_blob::first_selected_column = clicked_col;
+                            glob_blob::first_selected_row = clicked_row;
                         }
                     }
                     else // en dehors du jeu

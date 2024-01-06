@@ -9,7 +9,6 @@
 enum class GameState
 {
     MAIN_MENU = 0,
-    IN_TUTORIAL,
     IN_LEVEL,
     IN_EDITOR
 };
@@ -42,6 +41,8 @@ namespace glob_blob
     inline float dpi = 1.5f;
     inline int total_cell_size = cell_size + margin;
 
+    extern bool is_swapping, is_swap_horizontal, is_swap_vertical;
+
     extern std::map<std::string, Button> buttons;
 
     extern std::chrono::microseconds delta_time;
@@ -50,6 +51,7 @@ namespace glob_blob
     extern unsigned int current_points;
     extern unsigned int moves;
     extern int first_selected_row, first_selected_column;
+    extern int last_selected_row, last_selected_column;
 
 
     extern std::string current_level;

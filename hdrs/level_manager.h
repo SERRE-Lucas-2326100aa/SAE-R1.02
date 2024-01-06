@@ -34,7 +34,7 @@ struct GameSave
 
 
 //https://zoneasoluces.fr/le-guide-des-bonbons-de-candy-crush-saga/
-enum class BonBon_T : unsigned int
+enum class BonBon_T : unsigned short
 {
     Ignore = 0,
     NoDraw,

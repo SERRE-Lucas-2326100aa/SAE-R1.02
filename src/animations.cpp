@@ -2,11 +2,6 @@
 #include "hdrs/globals.h"
 #include <map>
 
-template <typename T>
-T animations::lerp(T a, T b, float t)
-{
-    return a + (b - a) * t;
-}
 
 float animations::fast_float_lerp(std::string& id, bool state, float min, float max, float speed)
 {
@@ -22,7 +17,7 @@ float animations::fast_float_lerp(std::string& id, bool state, float min, float 
         it = float_map.find(id);
     };
 
-    const float rate_speed = speed * glob_blob::delta_time.count();
+    const float rate_speed = speed * (glob_blob::delta_time.count() / 1000000.f);
 
     if (state)
     {
@@ -55,7 +50,7 @@ int animations::fast_int_lerp(std::string& id, bool state, int min, int max, flo
         it = float_map.find(id);
     };
 
-    const float rate_speed = speed * glob_blob::delta_time.count();
+    const float rate_speed = speed * (glob_blob::delta_time.count() / 1000000.f);
 
     if (state)
     {
@@ -71,4 +66,15 @@ int animations::fast_int_lerp(std::string& id, bool state, int min, int max, flo
     it->second = std::clamp(it->second, min, max);
 
     return it->second;
+}
+
+nsGraphics::RGBAcolor animations::lerp_color(nsGraphics::RGBAcolor start, nsGraphics::RGBAcolor end, float stage)
+{
+    nsGraphics::RGBAcolor col = {
+        lerp(start.getRed(), end.getRed(), stage),
+        lerp(start.getGreen(), end.getGreen(), stage),
+        lerp(start.getBlue(), end.getBlue(), stage)
+    };
+
+    return col;
 }

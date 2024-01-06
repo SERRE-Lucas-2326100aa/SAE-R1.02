@@ -1,5 +1,6 @@
 #include "hdrs/components/button.h"
 #include "hdrs/globals.h"
+#include "hdrs/animations.h"
 
 Button::Button(const nsGraphics::Vec2D& position, const int& width,
                const int& height, const std::string& content, const nsGraphics::RGBAcolor& fill_col,
@@ -12,12 +13,21 @@ Button::Button(const nsGraphics::Vec2D& position, const int& width,
 void Button::draw(MinGL& window) const
 {
     // On règle la couleur du rectangle
-    nsGraphics::RGBAcolor inColor = (is_in(glob_blob::cursor.x,glob_blob::cursor.y))
-                                        ? nsGraphics::RGBAcolor{173,216,230,255} : getFillColor();
+    bool is_hover = is_in(glob_blob::cursor.x, glob_blob::cursor.y);
 
+    float anim_stage = animations::fast_float_lerp(
+        std::string(text_content).append("anim"),
+        is_hover,
+        0.f,
+        1.f,
+        3.f);
+
+    nsGraphics::RGBAcolor inColor = animations::lerp_color(
+        getFillColor(), {173,216,230,255}, animations::ease_in_sine(anim_stage)
+        );
     glColor4ub(inColor.getRed(), inColor.getGreen(), inColor.getBlue(), inColor.getAlpha());
 
-    // Affiche un rectangle via la routine OpenGL
+    // Affiche un rectangle via la routine OpenGLv
     glRecti(first_pos.getX(), first_pos.getY(), second_pos.getX(), second_pos.getY());
 
     if (getBorderColor() != nsGraphics::KTransparent) {
