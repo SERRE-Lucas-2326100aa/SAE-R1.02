@@ -42,13 +42,7 @@ MLevels glob_blob::levels;
 chrono::microseconds glob_blob::delta_time;
 unsigned int glob_blob::current_points = 0;
 
-
-typedef unsigned short contenueDUneCase;
-//typedef vector <contenueDUneCase> CVLigne; // un type représentant une ligne de la grille
-//typedef vector <CVLigne> CMatrice; // un type représentant la grille
-
-const contenueDUneCase KAIgnorer = 0;
-const contenueDUneCase KPlusGrandNombreDansLaMatrice = 4;
+const unsigned short KAIgnorer = 0;
 
 //initialisation de la grille de jeu
 
@@ -64,7 +58,6 @@ void explositionUneBombeHorizontale(CMatrice & mat, const size_t & numLigne,
 void explositionUneBombeVerticale(CMatrice& mat, const size_t& numLigne,const size_t& numCol, const size_t& cmb);
 
 void generer_bonbons(CMatrice& mat);
-
 
 
 void generer_bonbons(CMatrice& mat)
