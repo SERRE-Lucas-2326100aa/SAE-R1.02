@@ -1,7 +1,7 @@
 # TODO
 
-- dessiner la grille (fait)
-- faire bouger les bonbons en cliquant (fait)
+- ~~dessiner la grille (fait)~~
+- ~~faire bouger les bonbons en cliquant (fait)~~
 
 - dessiner les bonbons (quasiment, pas en sprite) 
 - ajouter des animations (en cours) 
