@@ -15,6 +15,34 @@ using namespace std;
 #include "hdrs/globals.h"
 
 
+
+/**
+* Global variables shared across multiple cpp files
+**/
+
+
+bool glob_blob::is_dev = false;
+GameState glob_blob::menu_state;
+std::map<std::string, Button> glob_blob::buttons;
+
+std::map<std::string, std::reference_wrapper<nsShape::Rectangle>> glob_blob::rect_map;
+cursor_state glob_blob::cursor {0,0,-1,-1,0,false};
+
+bool glob_blob::is_swapping = false;
+bool glob_blob::is_swap_horizontal = false;
+bool glob_blob::is_swap_vertical = false;
+
+int glob_blob::first_selected_row = -1;
+int glob_blob::first_selected_column = -1;
+int glob_blob::last_selected_row = -1;
+int glob_blob::last_selected_column = -1;
+
+std::string glob_blob::current_level;
+MLevels glob_blob::levels;
+chrono::microseconds glob_blob::delta_time;
+unsigned int glob_blob::current_points = 0;
+
+
 typedef unsigned short contenueDUneCase;
 //typedef vector <contenueDUneCase> CVLigne; // un type représentant une ligne de la grille
 //typedef vector <CVLigne> CMatrice; // un type représentant la grille
@@ -30,54 +58,100 @@ const contenueDUneCase KPlusGrandNombreDansLaMatrice = 4;
 
 // affichage de la matrice avec les numéros de lignes / colonnes en haut / à gauche et avec un fond de couleur
 //pour signifier que la case est a KAIgnorer
-//***********************************************************************************/
-//***********************    R1.01 – Prog#10 Exercice 2   ***************************/
-//***********************************************************************************/
-
 // on remplira cela plus tard, juste la définition de la fonction
-void explositionUneBombeHorizontale (CMatrice & mat, const size_t & numLigne,
+void explositionUneBombeHorizontale(CMatrice & mat, const size_t & numLigne,
                                     const size_t & numColonne, const size_t & combien);
-void explositionUneBombeVerticale (CMatrice& mat, const size_t& numLigne,const size_t& numCol, const size_t& cmb);
+void explositionUneBombeVerticale(CMatrice& mat, const size_t& numLigne,const size_t& numCol, const size_t& cmb);
 
-bool detectionExplositionUneBombeVerticale(CMatrice& mat)
+void generer_bonbons(CMatrice& mat);
+
+
+
+void generer_bonbons(CMatrice& mat)
 {
-   bool auMoinsUneExplosion (false);
-   size_t combienALaSuite (1);
-   //on parcours la matrice case / case
-   // si on tombe sur la valeur KAIgnorer, on passe a la case suivante
-   // sinon on compte combien de fois on a la même valeur
-   for (size_t numCol = 0; numCol < mat[0].size(); ++numCol)
-   {
-    for (size_t numLigne = 0; numLigne < mat.size(); ++numLigne)
+    for (size_t ligne = 0; ligne < mat.size(); ++ligne)
     {
-        unsigned int _case = mat[numLigne][numCol];
-        if (_case == KAIgnorer)
+        for (size_t col = 0; col < mat[0].size(); ++col)
         {
-            continue;
-        }
-        combienALaSuite = 1;
+            if (mat[ligne][col] == KAIgnorer)
+            {
+                unsigned short random = static_cast<unsigned short>(BonBon_T::START)+1 + rand() %
+                                        (static_cast<unsigned short>(BonBon_T::MAX) - static_cast<unsigned short>(BonBon_T::START)-1);
 
-        for (size_t k = numLigne+1; k < mat.size() && mat[numLigne][numCol] == mat[k][numCol]; ++k)
-            ++combienALaSuite;
-
-        if (combienALaSuite >= 3){
-                    auMoinsUneExplosion = true;
-                    cout << "on a une suite en position colonne = " << numCol
-                        << "; ligne = " << numLigne
-                        << "; sur " << combienALaSuite << " cases" << endl;
-                    cout << string (20, '-') << endl << "matrice avant suppresion" << endl;
-                    //afficheMatriceV1(mat);
-                    explositionUneBombeVerticale (mat, numLigne, numCol, combienALaSuite);
-                    cout << string (20, '-') << endl << "matrice après suppresion" << endl;
-                    //afficheMatriceV1(mat);
+                mat[ligne][col] = random;
+            }
         }
     }
+}
+
+
+void show_mat(CMatrice& mat)
+{
+    for (size_t i = 0; i < mat.size(); ++i)
+    {
+        for (size_t j = 0; j < mat[0].size(); ++j)
+        {
+            cout << mat[i][j] << " ";
+        }
+
+        cout << endl;
     }
-   return auMoinsUneExplosion;
+
+    cout << "-------------------------------" << endl;
+}
+
+
+
+explosion detectionExplositionUneBombeVerticale(CMatrice& mat)
+{
+    explosion exp{false, 0,0,0};
+    size_t combienALaSuite = 1;
+    //on parcours la matrice case / case
+    // si on tombe sur la valeur KAIgnorer, on passe a la case suivante
+    // sinon on compte combien de fois on a la même valeur
+    for (size_t numCol = 0; numCol < mat[0].size(); ++numCol)
+    {
+        for (size_t numLigne = 0; numLigne < mat.size(); ++numLigne)
+        {
+            unsigned short _case = mat[numLigne][numCol];
+
+            BonBon_T bonbon = static_cast<BonBon_T>(_case);
+
+            if (bonbon == BonBon_T::Ignore)
+            {
+                continue;
+            }
+
+            combienALaSuite = 1;
+
+            for (size_t k = numLigne+1; k < mat.size() && mat[numLigne][numCol] == mat[k][numCol]; ++k)
+                ++combienALaSuite;
+
+            if (combienALaSuite >= 3){
+                exp.did_explode = true;
+                exp.explosion_num = combienALaSuite;
+                exp.start_col = numCol;
+                exp.start_row = numLigne;
+                glob_blob::current_points += 0.5*combienALaSuite;
+                //cout << "on a une suite en position colonne = " << numCol
+                //<< "; ligne = " << numLigne
+                //<< "; sur " << combienALaSuite << " cases" << endl;
+                //cout << string (20, '-') << endl << "matrice avant suppresion" << endl;
+                //afficheMatriceV1(mat);
+                explositionUneBombeVerticale (mat, numLigne, numCol, combienALaSuite);
+                generer_bonbons(mat);
+                //show_mat(mat);
+                //cout << string (20, '-') << endl << "matrice après suppresion" << endl;
+                //afficheMatriceV1(mat);
+            }
+        }
+    }
+    return exp;
 };
 
-bool detectionExplositionUneBombeHorizontale (CMatrice & mat){
-    bool auMoinsUneExplosion (false);
+explosion detectionExplositionUneBombeHorizontale (CMatrice & mat){
+    explosion exp{false, 0,0,0};
+    size_t combienALaSuite = 1;
     //on parcours la matrice case / case
     // si on tombe sur la valeur KAIgnorer, on passe a la case suivante
     // sinon on compte combien de fois on a la même valeur
@@ -90,27 +164,37 @@ bool detectionExplositionUneBombeHorizontale (CMatrice & mat){
             {
                 continue;
             }
-            size_t combienALaSuite (1);
+
+            combienALaSuite = 1;
 
             for (size_t k = numCol+1; k < mat[numLigne].size() && mat[numLigne][numCol] == mat[numLigne][k]; ++k)
                 ++combienALaSuite;
 
             if (combienALaSuite >= 3){
-                        auMoinsUneExplosion = true;
+                exp.did_explode = true;
+                exp.explosion_num = combienALaSuite;
+                exp.start_col = numCol;
+                exp.start_row = numLigne;
+                glob_blob::current_points +=  0.5*combienALaSuite;
+                /*auMoinsUneExplosion = true;
                         cout << "on a une suite en position numLigne = " << numLigne
                              << "; colonne = " << numCol
                              << "; sur  " << combienALaSuite << " cases" << endl;
-                        cout << string (20, '-') << endl << "matrice avant suppresion" << endl;
-                        //afficheMatriceV1(mat);
-                        explositionUneBombeHorizontale (mat, numLigne, numCol, combienALaSuite);
-                        cout << string (20, '-') << endl << "matrice après suppresion" << endl;
-                        //afficheMatriceV1(mat);
+                        cout << string (20, '-') << endl << "matrice avant suppresion" << endl;*/
+                //afficheMatriceV1(mat);
+                //explositionUneBombeHorizontale (mat, numLigne, numCol, combienALaSuite);
+                //generer_bonbons(mat);
+                //show_mat(mat);
+                //cout << string (20, '-') << endl << "matrice après suppresion" << endl;
+                //afficheMatriceV1(mat);
             }
         }
     }
-    return auMoinsUneExplosion;
+    return exp;
     //si on a aun moins 3 chiffres identiques a la suite
 };
+
+
 
 //fait descendre toutes les cases d'une unité suite à une explosition
 void explositionUneBombeHorizontale (CMatrice & mat, const size_t & numLigne,
@@ -119,7 +203,9 @@ void explositionUneBombeHorizontale (CMatrice & mat, const size_t & numLigne,
 
     for (size_t nbcol = numColonne; nbcol < numColonne + combien; ++nbcol){
         for (size_t nbligne = numLigne; nbligne>0; --nbligne){
+
             mat [nbligne][nbcol] = mat[nbligne-1][nbcol];
+
         }
         mat [0][nbcol] =  KAIgnorer;
     }
@@ -140,74 +226,6 @@ void explositionUneBombeVerticale (CMatrice& mat, const size_t& numLigne,const s
         }
     }
 }
-
-/*
-
-int ppalExo03 (){
-    CMatrice mat;
-    initMat(mat);
-    // affichage de la matrice sans les numéros de lignes / colonnes en haut / à gauche
-    afficheMatriceV2 (mat);
-
-    while (detectionExplositionUneBombeHorizontale (mat) || detectionExplositionUneBombeVerticale(mat))
-    {
-    }
-    //swap(mat[7][1], mat[7][2]);
-    //afficheMatriceV2 (mat);
-    return 0;
-}
-
-int ppalExo04 (){
-
-    CMatrice mat;
-    initMat(mat);
-    // affichage de la matrice sans les numéros de lignes / colonnes en haut / à gauche
-    detectionExplositionUneBombeHorizontale (mat);
-    afficheMatriceV2 (mat);
-    //condition de victoire a trouver
-    while (true) {
-        cout << "Fait un mouvement ";
-        cout << "numero de ligne : ";
-        size_t numLigne;
-        cin >> numLigne;
-        cout << "numero de colonne : ";
-        size_t numCol;
-        cin >> numCol;
-        cout << "Sens du deplacement : (A|Z|E|Q|D|V|X|C) : " << endl;
-        char deplacement;
-        cin >> deplacement;
-        faitUnMouvement (mat, deplacement, numLigne, numCol);
-        detectionExplositionUneBombeHorizontale (mat);
-        afficheMatriceV2 (mat);
-    }
-    return 0;
-}
-
-
-
- * Global variables shared across multiple cpp files
- **/
-
-
-bool glob_blob::is_dev = false;
-GameState glob_blob::menu_state;
-std::map<std::string, Button> glob_blob::buttons;
-cursor_state glob_blob::cursor {0,0,-1,-1,0,false};
-
-bool glob_blob::is_swapping = false;
-bool glob_blob::is_swap_horizontal = false;
-bool glob_blob::is_swap_vertical = false;
-
-int glob_blob::first_selected_row = -1;
-int glob_blob::first_selected_column = -1;
-int glob_blob::last_selected_row = -1;
-int glob_blob::last_selected_column = -1;
-
-std::string glob_blob::current_level;
-MLevels glob_blob::levels;
-chrono::microseconds glob_blob::delta_time;
-
-
 
 
 void reset_crusor_clicks()
@@ -267,6 +285,17 @@ void mouse_events(MinGL& window)
                     }
                 } else if (glob_blob::menu_state == GameState::IN_LEVEL)
                 {
+                    // handle main menu button click
+                    std::map<std::string, Button>::iterator it = glob_blob::buttons.find("back_to_menu");
+                    if (it != glob_blob::buttons.end())
+                    {
+                        Button& btn = it->second;
+                        if (btn.is_in(glob_blob::cursor.x, glob_blob::cursor.y))
+                        {
+                            btn.on_click();
+                        }
+                    }
+
                     nsGraphics::Vec2D window_size = window.getWindowSize();
                     Level& lvl = (*glob_blob::levels.find(glob_blob::current_level)).second;
 
@@ -295,7 +324,6 @@ void mouse_events(MinGL& window)
                         glob_blob::last_selected_row = clicked_row;
 
                         if (glob_blob::cursor.click_count == 2)
-                        //&& (std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1))
                         {
                             if ((std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1) && // on regarde si la difference entre les 2 cases
                                 (glob_blob::first_selected_column == clicked_col || glob_blob::first_selected_row == clicked_row) && // on compte pas le clique en diagonale
@@ -353,6 +381,8 @@ void mouse_events(MinGL& window)
 
 int main(int argc, char* argv[])
 {
+    srand(time(nullptr));
+
     if (argc == 2 && strcmp(argv[1], "dev") == 0)
     {
         std::cout << argv[0] << std::endl;
@@ -373,6 +403,7 @@ int main(int argc, char* argv[])
     glutFullScreenToggle();
 
     glob_blob::levels = level_manager::load_levels("levels");
+
     glob_blob::menu_state = GameState::MAIN_MENU;
 
     nsTransition::TransitionEngine tr_engine;

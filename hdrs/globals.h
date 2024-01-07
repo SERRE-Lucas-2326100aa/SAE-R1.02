@@ -1,6 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 #include "mingl/mingl.h"
+#include "mingl/shape/rectangle.h"
 #include "utils.h"
 #include "level_manager.h"
 #include <map>
@@ -41,7 +42,6 @@ namespace glob_blob
     inline float dpi = 1.5f;
     inline int total_cell_size = cell_size + margin;
 
-    extern bool is_swapping, is_swap_horizontal, is_swap_vertical;
 
     extern std::map<std::string, Button> buttons;
 
@@ -52,6 +52,9 @@ namespace glob_blob
     extern unsigned int moves;
     extern int first_selected_row, first_selected_column;
     extern int last_selected_row, last_selected_column;
+
+    extern bool is_swapping, is_swap_horizontal, is_swap_vertical;
+    extern std::map<std::string, std::reference_wrapper<nsShape::Rectangle>> rect_map;
 
 
     extern std::string current_level;

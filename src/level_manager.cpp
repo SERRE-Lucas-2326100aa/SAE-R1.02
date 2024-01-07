@@ -108,10 +108,22 @@ MLevels level_manager::load_levels(const char* levels_path)
 };
 
 
+int get_scale_position(const int& start_x, const int& pos)
+{
+    return start_x + glob_blob::margin * 4 + glob_blob::dpi*(pos*glob_blob::total_cell_size);
+};
+
+
 // game functions
-bool detectionExplositionUneBombeHorizontale(CMatrice&);
-bool detectionExplositionUneBombeVerticale(CMatrice&); // forward declaration
+explosion detectionExplositionUneBombeHorizontale(CMatrice&);
+explosion detectionExplositionUneBombeVerticale(CMatrice&); // forward declaration
+void explositionUneBombeHorizontale(CMatrice & mat, const size_t & numLigne,
+                                    const size_t & numColonne, const size_t & combien);
+void explositionUneBombeVerticale(CMatrice& mat, const size_t& numLigne,const size_t& numCol, const size_t& cmb);
+
 void game_move(CMatrice& mat, int& new_row, int& new_col);
+void show_mat(CMatrice& mat);
+void generer_bonbons(CMatrice& mat);
 
 
 void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
@@ -148,59 +160,127 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
     {
     case GameState::MAIN_MENU:
     {
-        Button btn({200,100}, 200, 100, "Niveau 1", nsGraphics::KBlack);
+        // todo 4 bouttons pour jouer aux niveaux, creer un niveau, editer un niveau ou quitter
 
-        btn.on_click = [](){
-            std::cout << "yeah changing this shit" << std::endl;
+        static unsigned int cpt = 0;
 
-            glob_blob::current_level = "/home/def/Desktop/SAE-R1.02/build/levels/nivo_un_jecrois.txt";
-            glob_blob::levels[glob_blob::current_level] = load_level(glob_blob::current_level.c_str(),true);
+        for (auto it = glob_blob::levels.begin(); ; ++it)
+        {
+            if (it == glob_blob::levels.end())
+            {
+                cpt = 0;
+                break;
+            }
 
-            glob_blob::menu_state = GameState::IN_LEVEL;
-            glutSetCursor(GLUT_CURSOR_INHERIT);
-        };
+            int line_x = 200*(cpt+1);
+            int line_y = 100;
 
-        glob_blob::buttons.insert({"lvl1", btn});
-        window << btn;
+            if (cpt > 0 && cpt % 4 == 0)
+            {
+                line_y += 105;
+            }
+
+            Button btne({line_x, line_y}, 200,100, "Niveau " + std::to_string(it->second.lvl_num), nsGraphics::KBlack);
+
+            btne.on_click = [it](){
+                std::cout << " uwu " << it->first << std::endl;
+
+                glob_blob::current_level = it->first;
+
+                if (glob_blob::current_level.empty())
+                    return;
+
+                glob_blob::levels[glob_blob::current_level] = load_level(glob_blob::current_level.c_str(), true);
+
+                glob_blob::menu_state = GameState::IN_LEVEL;
+
+                glutSetCursor(GLUT_CURSOR_INHERIT);
+            };
+
+            glob_blob::buttons.insert({"lvl"+std::to_string(it->second.lvl_num), btne});
+            window << btne;
+            ++cpt;
+        }
+
         break;
     }
     case GameState::IN_LEVEL:
     {
-        Level& lvl = (*glob_blob::levels.find(glob_blob::current_level)).second;
-
-        //std::cout << lvl.lvl_num << std::endl;
-
-        // draw board
-        //std::cout << lvl.mat.size() << std::endl;
+        Level& lvl = (*glob_blob::levels.find(glob_blob::current_level)).second; // le niveau est bien chargé normalement à partir de ce point là sinon ça crash :)
 
         CMatrice& mat = lvl.mat; // alias
 
-        int num_rows = mat.size();
-        int num_cols = mat[0].size();
+        size_t num_rows = mat.size();
+        size_t num_cols = mat[0].size();
 
         nsGraphics::Vec2D board_top_left = {(window_size.getX() /2.f) - (4 * glob_blob::total_cell_size), (window_size.getY()/4.f)};
         nsGraphics::Vec2D board_bottom_right = {board_top_left.getX() + glob_blob::dpi*(num_cols * glob_blob::total_cell_size), board_top_left.getY() + glob_blob::dpi*(num_rows * glob_blob::total_cell_size)};
 
-        nsShape::Rectangle recttt(board_top_left, board_bottom_right, nsGraphics::KBlack);
+        nsShape::Rectangle board(board_top_left, board_bottom_right, nsGraphics::KBlack);
 
-        window << recttt;
-
-        detectionExplositionUneBombeVerticale(mat);
-        detectionExplositionUneBombeHorizontale(mat);
+        window << board;
 
 
-        for (int row = 0; row < num_rows; ++row)
+        // affichage du nombre de points
+
+        nsGraphics::Vec2D point_top_left = {40,100};
+        nsGraphics::Vec2D point_bot_right = {300,180};
+
+        nsShape::Rectangle points(point_top_left, point_bot_right, nsGraphics::KBlack);
+
+        nsGui::Text pp({point_top_left.getX()+100,point_top_left.getY()+ 40},"Points: " + std::to_string(glob_blob::current_points) + " / " + std::to_string(lvl.required_points),nsGraphics::KYellow,
+                               nsGui::GlutFont::BITMAP_9_BY_15, nsGui::Text::ALIGNH_CENTER);
+
+        window << points;
+        window << pp;
+
+        // bouton retour au menu
+
+        Button btn({40,200}, 200, 100, "Retour Menu", nsGraphics::KBlack);
+
+        btn.on_click = [&](){
+            lvl.mat[0].resize(0);
+            lvl.mat.resize(0);
+            //glob_blob::levels[glob_blob::current_level] = load_level(glob_blob::current_level.c_str(),true);
+
+            glob_blob::menu_state = GameState::MAIN_MENU;
+            glob_blob::current_points = 0;
+
+            glutSetCursor(GLUT_CURSOR_INHERIT);
+            return;
+        };
+
+        glob_blob::buttons.insert({"back_to_menu", btn});
+
+        window << btn;
+
+
+        //win text
+
+        nsGui::Text txt({window_size.getX()/2.f,window_size.getY()/2.f},"VOUS AVEZ GAGNE",nsGraphics::KYellow,
+            nsGui::GlutFont::BITMAP_9_BY_15, nsGui::Text::ALIGNH_CENTER);
+
+
+
+        if (glob_blob::current_points >= lvl.required_points)
         {
-            for (int col = 0; col < num_cols; ++col)
-            {
-                unsigned short nb = mat[row][col];
+            window << txt;
+            return;
+        }
 
-                //BonBon_T bonbon_type = static_cast<BonBon_T>(nb);
+        explosion explosion_v = detectionExplositionUneBombeVerticale(mat);
+        explosion explosion_h = detectionExplositionUneBombeHorizontale(mat);
+
+        for (size_t row = 0; row < num_rows; ++row)
+        {
+            for (size_t col = 0; col < num_cols; ++col)
+            {
+                unsigned short nb_bonbon = mat[row][col];
 
                 // if second click
 
-                int x = board_top_left.getX() + glob_blob::margin * 4 + glob_blob::dpi*(col*glob_blob::total_cell_size);
-                int y = board_top_left.getY() + glob_blob::margin * 4 + glob_blob::dpi*(row*glob_blob::total_cell_size);
+                int x = get_scale_position(board_top_left.getX(),col);
+                int y = get_scale_position(board_top_left.getY(),row);
 
                 int x_end = x + glob_blob::cell_size;
                 int y_end = y + glob_blob::cell_size;
@@ -211,11 +291,44 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                     window  << cc;
                 }
 
+                nsGraphics::RGBAcolor rect_color = nsGraphics::KTransparent;
+                nsGraphics::RGBAcolor original_color;
+
+                BonBon_T t_bonbon = static_cast<BonBon_T>(nb_bonbon);
+
+                switch(t_bonbon)
+                {
+                case BonBon_T::NoDraw:
+                case BonBon_T::Ignore:
+                    rect_color = nsGraphics::KTransparent;
+                    original_color = nsGraphics::KTransparent;
+                    break;
+                case BonBon_T::NormalVert:
+                    rect_color = nsGraphics::KGreen;
+                    original_color = nsGraphics::KGreen;
+                    break;
+                case BonBon_T::NormalBleu:
+                    rect_color = nsGraphics::KBlue;
+                    original_color = nsGraphics::KBlue;
+                    break;
+                case BonBon_T::NormalRouge:
+                    rect_color = nsGraphics::KRed;
+                    original_color = nsGraphics::KRed;
+                    break;
+                case BonBon_T::NormalOrange:
+                    rect_color = nsGraphics::KYellow;
+                    original_color = nsGraphics::KYellow;
+                    break;
+                }
+
                 // mouvements
                 static std::string id_move_x = "h_swap";
                 static std::string id_move_y = "v_swap";
+                static std::string h_swap_id = "h_swap_whole";
+                static std::string dissapear_id_h = "dissappear_anim";
 
                 static bool reset_anim = false;
+                static bool reset_anim_whole = false;
 
                 if (!glob_blob::is_swapping && reset_anim)
                 {
@@ -223,63 +336,63 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                     float st = animations::fast_float_lerp(id_move_x, false, 0.f, 1.f, 1.f);
                     animations::fast_float_lerp(id_move_y, false, 0.f, 1.f, 1.f);
 
-                    if (st == 1.f)
+                    if (st >= 1.f)
                         reset_anim = false;
                 }
 
+                if (reset_anim_whole)
+                {
+                    float xt = animations::fast_float_lerp(h_swap_id,false,0.f, 1.f,100.f);
+                    float wt = animations::fast_float_lerp(dissapear_id_h,false,0.f, 0.5f,100.f);
+
+                    if (xt == 0.f && wt == 0.f)
+                    {
+                        reset_anim_whole = false;
+                    }
+                }
+
+                // animation du cube en mouvement horizontale
                 if (glob_blob::is_swap_horizontal)
                 {
                     float anim_stage = animations::fast_float_lerp(id_move_x, glob_blob::is_swapping, 0.f, 1.f, 0.08f);
 
-                    if (row == glob_blob::first_selected_row && col == glob_blob::first_selected_column)
-                    {
-                        int new_x = board_top_left.getX() + glob_blob::margin * 4 + glob_blob::dpi*(glob_blob::last_selected_column*glob_blob::total_cell_size);
+                    bool is_first_selected = row == glob_blob::first_selected_row && col == glob_blob::first_selected_column;
+                    bool is_last_selected = row == glob_blob::last_selected_row && col == glob_blob::last_selected_column;
+
+                    if (is_first_selected || is_last_selected) {
+                        int new_x = is_first_selected ? get_scale_position(board_top_left.getX(), glob_blob::last_selected_column) :
+                                        get_scale_position(board_top_left.getX(), glob_blob::first_selected_column);
                         int new_end_x = new_x + glob_blob::cell_size;
 
                         x = animations::lerp(x, new_x, anim_stage);
                         x_end = animations::lerp(x_end, new_end_x, anim_stage);
                     }
-                    if (row == glob_blob::last_selected_row && col == glob_blob::last_selected_column)
-                    {
-                        int new_x = board_top_left.getX() + glob_blob::margin * 4 + glob_blob::dpi*(glob_blob::first_selected_column*glob_blob::total_cell_size);
-                        int new_end_x = new_x + glob_blob::cell_size;
 
-                        x = animations::lerp(x, new_x, anim_stage);
-                        x_end = animations::lerp(x_end, new_end_x, anim_stage);
-                    }
-
-                    if (anim_stage > 0.98f)
-                    {
+                    if (anim_stage >= 0.9f) {
                         game_move(mat, glob_blob::last_selected_row, glob_blob::last_selected_column);
                         reset_anim = true;
                         glob_blob::is_swapping = false;
                         glob_blob::is_swap_horizontal = false;
                     }
                 }
-
+                // animation du cube en mouvement vertical
                 if (glob_blob::is_swap_vertical)
                 {
                     float anim_stage = animations::fast_float_lerp(id_move_y, glob_blob::is_swapping, 0.f, 1.f, 0.08f);
 
-                    if (row == glob_blob::first_selected_row && col == glob_blob::first_selected_column)
-                    {
-                        int new_y = board_top_left.getY() + glob_blob::margin * 4 + glob_blob::dpi*(glob_blob::last_selected_row*glob_blob::total_cell_size);
+                    bool is_first_selected = row == glob_blob::first_selected_row && col == glob_blob::first_selected_column;
+                    bool is_last_selected = row == glob_blob::last_selected_row && col == glob_blob::last_selected_column;
+
+                    if (is_first_selected || is_last_selected) {
+                        int new_y = is_first_selected ? get_scale_position(board_top_left.getY(), glob_blob::last_selected_row) :
+                                        get_scale_position(board_top_left.getY(), glob_blob::first_selected_row);
                         int new_end_y = new_y + glob_blob::cell_size;
 
                         y = animations::lerp(y, new_y, anim_stage);
                         y_end = animations::lerp(y_end, new_end_y, anim_stage);
                     }
-                    if (row == glob_blob::last_selected_row && col == glob_blob::last_selected_column)
-                    {
-                        int new_y = board_top_left.getY() + glob_blob::margin * 4 + glob_blob::dpi*(glob_blob::first_selected_row*glob_blob::total_cell_size);
-                        int new_end_y = new_y + glob_blob::cell_size;
 
-                        y = animations::lerp(y, new_y, anim_stage);
-                        y_end = animations::lerp(y_end, new_end_y, anim_stage);
-                    }
-
-                    if (anim_stage >= 0.98f)
-                    {
+                    if (anim_stage >= 0.9f) {
                         game_move(mat, glob_blob::last_selected_row, glob_blob::last_selected_column);
                         reset_anim = true;
                         glob_blob::is_swapping = false;
@@ -287,27 +400,47 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                     }
                 }
 
+                float anim_stage = animations::fast_float_lerp(h_swap_id,explosion_h.did_explode,0.f, 1.f,0.04f);
+                float d_stage = animations::fast_float_lerp(dissapear_id_h,explosion_h.did_explode,0.f, 0.5f,0.08f);
 
-                nsShape::Rectangle rect({x,y},{x_end,y_end}, nsGraphics::KTransparent);
-
-                switch(nb)
+                // horizontal pushing
+                if (explosion_h.did_explode)
                 {
-                case 0:
-                    rect.setFillColor(nsGraphics::KTransparent);
-                    break;
-                case 1:
-                    rect.setFillColor(nsGraphics::KGreen);
-                    break;
-                case 2:
-                    rect.setFillColor(nsGraphics::KBlue);
-                    break;
-                case 3:
-                    rect.setFillColor(nsGraphics::KRed);
-                    break;
-                case 4:
-                    rect.setFillColor(nsGraphics::KYellow);
-                    break;
+                    // push the lines
+                    for (size_t nbcol = explosion_h.start_col; nbcol < explosion_h.start_col + explosion_h.explosion_num; ++nbcol)
+                    {
+                        for (size_t nbligne = explosion_h.start_row; nbligne>0; --nbligne)
+                        {
+                            if (nbcol == col && row == nbligne-1)
+                            {
+
+                                int new_y = get_scale_position(board_top_left.getY(), nbligne);
+                                int new_end_y = new_y + glob_blob::cell_size;
+
+                                y = animations::lerp(y, new_y, anim_stage);
+                                y_end = animations::lerp(y_end, new_end_y, anim_stage);
+                                rect_color = original_color;
+                            }
+                            else if (nbcol == col && row == explosion_h.start_row && anim_stage <= 0.4)
+                            {
+                                rect_color = animations::lerp_color(rect_color, nsGraphics::KTransparent, d_stage);
+                            };
+                        }
+                    }
+
+                    if (anim_stage >= 1.f && !reset_anim_whole)
+                    {
+                        reset_anim_whole = true;
+                        explositionUneBombeHorizontale(mat,explosion_h.start_row,explosion_h.start_col, explosion_h.explosion_num);
+                        generer_bonbons(mat);
+                    }
                 }
+
+
+                nsShape::Rectangle rect({x,y},{x_end,y_end}, rect_color);
+
+
+                rect.setFillColor(rect_color);
 
                 window << rect;
 

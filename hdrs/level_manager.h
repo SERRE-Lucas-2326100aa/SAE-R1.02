@@ -38,12 +38,11 @@ enum class BonBon_T : unsigned short
 {
     Ignore = 0,
     NoDraw,
-    Block,
+    START,
     NormalBleu,
     NormalVert,
     NormalRouge,
     NormalOrange,
-    Bombe,
     MAX
 };
 
