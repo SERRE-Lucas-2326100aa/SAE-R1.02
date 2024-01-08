@@ -1,0 +1,79 @@
+\hypertarget{class_button}{}\doxysection{Button Class Reference}
+\label{class_button}\index{Button@{Button}}
+
+
+{\ttfamily \#include $<$button.\+h$>$}
+
+
+
+Inheritance diagram for Button\+:
+% FIG 0
+
+
+Collaboration diagram for Button\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_button_ab42383a34baee0a2a3d544edb0275c8e}{Button}} (const ns\+Graphics\+::\+Vec2D \&position, const int \&width, const int \&height, const std\+::string \&content, const ns\+Graphics\+::\+RGBAcolor \&fill\+\_\+col, const ns\+Graphics\+::\+RGBAcolor \&border\+\_\+col=ns\+Graphics\+::\+KTransparent)
+\item 
+virtual \mbox{\hyperlink{class_button_a850ee7af3cd23611b6614ff1c1a83b18}{$\sim$\+Button}} () override=default
+\item 
+virtual void \mbox{\hyperlink{class_button_af8e7ae44b12cced98c2b98d337ded40e}{draw}} (Min\+GL \&window) const override
+\item 
+bool \mbox{\hyperlink{class_button_a75d138f793dae468543d1af6fd230206}{is\+\_\+in}} (int x, int y) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::function$<$ void()$>$ \mbox{\hyperlink{class_button_a53a6fbc1e5e336830c2f40f6919b9fdd}{on\+\_\+click}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_button_ab42383a34baee0a2a3d544edb0275c8e}\label{class_button_ab42383a34baee0a2a3d544edb0275c8e}} 
+\index{Button@{Button}!Button@{Button}}
+\index{Button@{Button}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{Button()}{Button()}}
+{\footnotesize\ttfamily Button\+::\+Button (\begin{DoxyParamCaption}\item[{const ns\+Graphics\+::\+Vec2D \&}]{position,  }\item[{const int \&}]{width,  }\item[{const int \&}]{height,  }\item[{const std\+::string \&}]{content,  }\item[{const ns\+Graphics\+::\+RGBAcolor \&}]{fill\+\_\+col,  }\item[{const ns\+Graphics\+::\+RGBAcolor \&}]{border\+\_\+col = {\ttfamily nsGraphics\+:\+:KTransparent} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_button_a850ee7af3cd23611b6614ff1c1a83b18}\label{class_button_a850ee7af3cd23611b6614ff1c1a83b18}} 
+\index{Button@{Button}!````~Button@{$\sim$Button}}
+\index{````~Button@{$\sim$Button}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{$\sim$Button()}{~Button()}}
+{\footnotesize\ttfamily virtual Button\+::$\sim$\+Button (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_button_af8e7ae44b12cced98c2b98d337ded40e}\label{class_button_af8e7ae44b12cced98c2b98d337ded40e}} 
+\index{Button@{Button}!draw@{draw}}
+\index{draw@{draw}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily void Button\+::draw (\begin{DoxyParamCaption}\item[{Min\+GL \&}]{window }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Here is the call graph for this function\+:
+% FIG 2
+\mbox{\Hypertarget{class_button_a75d138f793dae468543d1af6fd230206}\label{class_button_a75d138f793dae468543d1af6fd230206}} 
+\index{Button@{Button}!is\_in@{is\_in}}
+\index{is\_in@{is\_in}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{is\_in()}{is\_in()}}
+{\footnotesize\ttfamily bool Button\+::is\+\_\+in (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Here is the caller graph for this function\+:
+% FIG 3
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_button_a53a6fbc1e5e336830c2f40f6919b9fdd}\label{class_button_a53a6fbc1e5e336830c2f40f6919b9fdd}} 
+\index{Button@{Button}!on\_click@{on\_click}}
+\index{on\_click@{on\_click}!Button@{Button}}
+\doxysubsubsection{\texorpdfstring{on\_click}{on\_click}}
+{\footnotesize\ttfamily std\+::function$<$void()$>$ Button\+::on\+\_\+click}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+hdrs/components/\mbox{\hyperlink{button_8h}{button.\+h}}\item 
+src/components/\mbox{\hyperlink{button_8cpp}{button.\+cpp}}\end{DoxyCompactItemize}

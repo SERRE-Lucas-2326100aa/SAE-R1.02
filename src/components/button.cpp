@@ -54,10 +54,6 @@ void Button::draw(MinGL& window) const
     {
         glutSetCursor(GLUT_CURSOR_INFO);
     }
-    else
-    {
-        glutSetCursor(GLUT_CURSOR_INHERIT);
-    }
 
     //std::cout << glob_blob::cursor.is_clicking << std::endl;
 

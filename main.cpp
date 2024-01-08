@@ -257,7 +257,7 @@ void game_move(CMatrice& mat, int& new_row, int& new_col)
 
     swap(mat[glob_blob::first_selected_row][glob_blob::first_selected_column], mat[new_row][new_col]);
 
-    std::cout << "swapped" << std::endl;
+    //std::cout << "swapped" << std::endl;
 
     reset_crusor_clicks();
 }
@@ -344,7 +344,7 @@ void mouse_events(MinGL& window)
                                 (lvl.mat[clicked_row][clicked_col] != KAIgnorer  && lvl.mat[glob_blob::first_selected_row][glob_blob::first_selected_column] != KAIgnorer) &&  // on bouge pas les endroit à ignorer
                                 (lvl.mat[clicked_row][clicked_col] != KAPasDessinerEtIgnorer  && lvl.mat[glob_blob::first_selected_row][glob_blob::first_selected_column] != KAPasDessinerEtIgnorer))
                             {
-                                std::cout << lvl.mat[clicked_row][clicked_col] << std::endl;
+                                //std::cout << lvl.mat[clicked_row][clicked_col] << std::endl;
 
                                 glob_blob::is_swapping = true;
                                 glob_blob::is_swap_vertical = ((glob_blob::first_selected_row == clicked_row - 1 ||
@@ -394,6 +394,8 @@ void mouse_events(MinGL& window)
 
 int main(int argc, char* argv[])
 {
+    (void)(argc); // warning unused
+    (void)(argv);
     srand(time(nullptr));
 
     glob_blob::is_dev = true;
@@ -425,9 +427,6 @@ int main(int argc, char* argv[])
 
         window.clearScreen();
 
-        /*
-         * Ici, écrivez votre logique d'affichage et de gestion des évènements
-         */
         mouse_events(window);
 
         level_manager::dev_mode_draw(window,tr_engine);
@@ -437,8 +436,6 @@ int main(int argc, char* argv[])
         // On finit la frame en cours
         window.finishFrame();
 
-        // On vide la queue d'évènements
-        //window.getEventManager().clearEvents();
 
         // On attend un peu pour limiter le framerate et soulager le CPU
         this_thread::sleep_for(chrono::milliseconds(1000 / FPS_LIMIT) - chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - frame_start));

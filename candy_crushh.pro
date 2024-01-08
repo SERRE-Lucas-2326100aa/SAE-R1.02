@@ -7,8 +7,7 @@ SOURCES += \
         main.cpp \
         src/animations.cpp \
         src/components/button.cpp \
-        src/level_manager.cpp \
-        src/utils.cpp
+        src/level_manager.cpp
 
 
 include(MinGL2_IUT_AIX/mingl.pri);

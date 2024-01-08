@@ -1,0 +1,99 @@
+\hypertarget{globals_8h}{}\doxysection{hdrs/globals.h File Reference}
+\label{globals_8h}\index{hdrs/globals.h@{hdrs/globals.h}}
+{\ttfamily \#include \char`\"{}mingl/mingl.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mingl/shape/rectangle.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}level\+\_\+manager.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$map$>$}\newline
+Include dependency graph for globals.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcursor__state}{cursor\+\_\+state}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespaceglob__blob}{glob\+\_\+blob}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285}{Game\+State}} \{ \mbox{\hyperlink{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285aa16d505f03a4b6f35486f65f6a61317e}{MAIN\+\_\+\+MENU}} = 0
+, \mbox{\hyperlink{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285a5e10696580924245442f0f24b2d704e5}{IN\+\_\+\+LEVEL}}
+, \mbox{\hyperlink{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285a7ff4f83710851c19b10f68fb3e58a99c}{IN\+\_\+\+EDITOR}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespaceglob__blob_aff52f8e506500a98a59d7b18f41f08af}{glob\+\_\+blob\+::is\+\_\+dev}} = false
+\item 
+ns\+Graphics\+::\+Vec2D \mbox{\hyperlink{namespaceglob__blob_af9b75ddcea9ef4da3ddcb2ce3ea9827f}{glob\+\_\+blob\+::win\+\_\+size}}
+\item 
+\mbox{\hyperlink{structcursor__state}{cursor\+\_\+state}} \mbox{\hyperlink{namespaceglob__blob_a3a6d98f097b4d6ca9e9255fc4f24a974}{glob\+\_\+blob\+::cursor}} \{0,0,-\/1,-\/1,0,false\}
+\item 
+\mbox{\hyperlink{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285}{Game\+State}} \mbox{\hyperlink{namespaceglob__blob_a3664c96caac8e41de10c1220d1299ec8}{glob\+\_\+blob\+::menu\+\_\+state}}
+\item 
+int \mbox{\hyperlink{namespaceglob__blob_a86230cb0f4f23d5df5cb2504c0732551}{glob\+\_\+blob\+::cell\+\_\+size}} = 32
+\item 
+int \mbox{\hyperlink{namespaceglob__blob_a59b6fb61f39ccd0e9e37cd16a2bcabd6}{glob\+\_\+blob\+::margin}} = 2
+\item 
+float \mbox{\hyperlink{namespaceglob__blob_a3dd01b7687a6e68a43ed32e7db74cb5f}{glob\+\_\+blob\+::dpi}} = 1.\+5f
+\item 
+int \mbox{\hyperlink{namespaceglob__blob_a50868561a6fce61e48d38f906d16b286}{glob\+\_\+blob\+::total\+\_\+cell\+\_\+size}} = cell\+\_\+size + margin
+\item 
+bool \mbox{\hyperlink{namespaceglob__blob_a9d2c23f467fe95568175bbb269ae796a}{glob\+\_\+blob\+::is\+\_\+swapping}} = false
+\item 
+bool \mbox{\hyperlink{namespaceglob__blob_a2e50f567d3d7a67654b7fc060d2c7792}{glob\+\_\+blob\+::is\+\_\+swap\+\_\+horizontal}} = false
+\item 
+bool \mbox{\hyperlink{namespaceglob__blob_a1996641a783fa39ae2092bba17772626}{glob\+\_\+blob\+::is\+\_\+swap\+\_\+vertical}} = false
+\item 
+unsigned int \mbox{\hyperlink{namespaceglob__blob_a20e668469116ff4a9b6909bed3486ed9}{glob\+\_\+blob\+::current\+\_\+points}} = 0
+\item 
+int \mbox{\hyperlink{namespaceglob__blob_a444ffd0fe296fa9ec3eef90d0fcb49a4}{glob\+\_\+blob\+::first\+\_\+selected\+\_\+row}} = -\/1
+\item 
+int \mbox{\hyperlink{namespaceglob__blob_a12cc8c7099ad4c8564e4262ea578bc2b}{glob\+\_\+blob\+::first\+\_\+selected\+\_\+column}} = -\/1
+\item 
+int \mbox{\hyperlink{namespaceglob__blob_ad74d7d105695eb22ac141ee21a3e83ad}{glob\+\_\+blob\+::last\+\_\+selected\+\_\+row}} = -\/1
+\item 
+int \mbox{\hyperlink{namespaceglob__blob_aead64780282b012b732b4182c57c4fc4}{glob\+\_\+blob\+::last\+\_\+selected\+\_\+column}} = -\/1
+\item 
+std\+::map$<$ std\+::string, std\+::reference\+\_\+wrapper$<$ ns\+Shape\+::\+Rectangle $>$ $>$ \mbox{\hyperlink{namespaceglob__blob_a7d91dc08f8f7671478601a74139facc8}{glob\+\_\+blob\+::rect\+\_\+map}}
+\item 
+std\+::map$<$ std\+::string, \mbox{\hyperlink{class_button}{Button}} $>$ \mbox{\hyperlink{namespaceglob__blob_a409ffebec46e18a5bf3629d4f6db2665}{glob\+\_\+blob\+::buttons}}
+\item 
+std\+::chrono\+::microseconds \mbox{\hyperlink{namespaceglob__blob_aa7f5e498912cd05453e495c3f95cf907}{glob\+\_\+blob\+::delta\+\_\+time}}
+\item 
+std\+::string \mbox{\hyperlink{namespaceglob__blob_a4fc723049082b7895a0ab3da26e65702}{glob\+\_\+blob\+::current\+\_\+level}}
+\item 
+\mbox{\hyperlink{level__manager_8h_a6ca7c82410480cc223ba6adbbefde016}{MLevels}} \mbox{\hyperlink{namespaceglob__blob_a172a3d3f61dd20a5672c6aaa28c8b4ff}{glob\+\_\+blob\+::levels}}
+\item 
+Min\+GL \& \mbox{\hyperlink{namespaceglob__blob_a48c0627ee2910d4e52e439ce2eb3bf62}{glob\+\_\+blob\+::main\+\_\+window}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285}\label{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285}} 
+\index{globals.h@{globals.h}!GameState@{GameState}}
+\index{GameState@{GameState}!globals.h@{globals.h}}
+\doxysubsubsection{\texorpdfstring{GameState}{GameState}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285}{Game\+State}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MAIN\_MENU@{MAIN\_MENU}!globals.h@{globals.h}}\index{globals.h@{globals.h}!MAIN\_MENU@{MAIN\_MENU}}}\mbox{\Hypertarget{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285aa16d505f03a4b6f35486f65f6a61317e}\label{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285aa16d505f03a4b6f35486f65f6a61317e}} 
+MAIN\+\_\+\+MENU&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{IN\_LEVEL@{IN\_LEVEL}!globals.h@{globals.h}}\index{globals.h@{globals.h}!IN\_LEVEL@{IN\_LEVEL}}}\mbox{\Hypertarget{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285a5e10696580924245442f0f24b2d704e5}\label{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285a5e10696580924245442f0f24b2d704e5}} 
+IN\+\_\+\+LEVEL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{IN\_EDITOR@{IN\_EDITOR}!globals.h@{globals.h}}\index{globals.h@{globals.h}!IN\_EDITOR@{IN\_EDITOR}}}\mbox{\Hypertarget{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285a7ff4f83710851c19b10f68fb3e58a99c}\label{globals_8h_a7899b65f1ea0f655e4bbf8d2a5714285a7ff4f83710851c19b10f68fb3e58a99c}} 
+IN\+\_\+\+EDITOR&\\
+\hline
+
+\end{DoxyEnumFields}

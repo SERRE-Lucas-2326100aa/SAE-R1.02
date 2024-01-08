@@ -1,5 +1,4 @@
 /**
- *
  * @file    level_manager.h
  * @author  Ersan MEHMED
  * @date    Décembre 2023
@@ -18,19 +17,22 @@
 #include "hdrs/animations.h"
 
 using std::chrono::microseconds, std::filesystem::path;
-
+// Fonction qui charge un niveau à partir d'un fichier
 Level level_manager::load_level(const char* level_path, bool fully_load)
 {
     Level lvl;
-
+    // Ouvre le fichier
     std::ifstream lvl_file(level_path);
-    std::cout << "loading " << level_path << std::endl;
+    std::cout << "chargement " << level_path << std::endl;
 
+     // Vérifie l'ouverture
     if (lvl_file.fail())
     {
-        throw std::runtime_error("failed to open lvl, gg");
+        throw std::runtime_error("échec de l'ouverture, FF");
     }
 
+
+    // Lis les informations
     lvl.path = level_path;
 
     lvl_file >> lvl.lvl_num;
@@ -46,9 +48,10 @@ Level level_manager::load_level(const char* level_path, bool fully_load)
     if (!fully_load)
         lvl.is_fully_loaded = false;
 
+    // Faire charger la matrice si la condition est respectée
     if (fully_load)
     {
-        unsigned int bonbon;
+        unsigned short bonbon;
         lvl.mat.resize(row);
 
         for (size_t i = 0; i < row; ++i)
@@ -74,16 +77,7 @@ Level level_manager::load_level(const char* level_path, bool fully_load)
     return lvl;
 };
 
-
-void show_loaded_levels(MLevels& levels)
-{
-    for (const auto& lvl : levels)
-    {
-        std::cout << lvl.second.path << std::endl;
-    }
-}
-
-
+// Fonction pour charger tous les niveaux d'un répertoire spécifié
 MLevels level_manager::load_levels(const char* levels_path)
 {
     MLevels level_maps;
@@ -91,6 +85,7 @@ MLevels level_manager::load_levels(const char* levels_path)
     path game_path = std::filesystem::current_path();
     game_path.append(levels_path);
 
+    // Vérifier si le répertoire existe, le créer s'il n'existe pas
     bool path_exists = std::filesystem::exists(game_path);
 
     if (!path_exists)
@@ -99,22 +94,10 @@ MLevels level_manager::load_levels(const char* levels_path)
         return level_maps;
     }
 
-    std::vector<std::pair<std::filesystem::path, Level>> temp_vec;
 
     for (const auto& entry : std::filesystem::directory_iterator(game_path))
     {
-        Level lvl = load_level(entry.path().c_str(), false);
-        temp_vec.push_back({entry.path(), lvl});
-        //level_maps[entry.path()] = load_level(entry.path().c_str(), false);
-    }
-
-    // Sort the vector based on level_num
-    std::sort(temp_vec.begin(), temp_vec.end(),
-              [](const auto& a, const auto& b) { return a.second.lvl_num < b.second.lvl_num; });
-
-    for (const auto& pair : temp_vec)
-    {
-        level_maps[pair.first] = pair.second;
+        level_maps[entry.path()] = load_level(entry.path().c_str(), false);
     }
 
     return level_maps;
@@ -127,9 +110,9 @@ int get_scale_position(const int& start_x, const int& pos)
 };
 
 
-// game functions
+// fonctions du jeu qui sont définit dans le main.cpp
 explosion detectionExplositionUneBombeHorizontale(CMatrice&);
-explosion detectionExplositionUneBombeVerticale(CMatrice&); // forward declaration
+explosion detectionExplositionUneBombeVerticale(CMatrice&);
 void explositionUneBombeHorizontale(CMatrice & mat, const size_t & numLigne,
                                     const size_t & numColonne, const size_t & combien);
 void explositionUneBombeVerticale(CMatrice& mat, const size_t& numLigne,const size_t& numCol, const size_t& cmb);
@@ -137,7 +120,6 @@ void explositionUneBombeVerticale(CMatrice& mat, const size_t& numLigne,const si
 void game_move(CMatrice& mat, int& new_row, int& new_col);
 void show_mat(CMatrice& mat);
 void generer_bonbons(CMatrice& mat);
-
 
 void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 {
@@ -151,9 +133,8 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
     // premier initialization, s'execute qu'une fois.
     if (!loaded_first)
     {
-        show_loaded_levels(glob_blob::levels);
         //load_level("/home/def/Desktop/SAE-R1.02/build/levels/nivo_un_jecrois.txt",true);
-        // transition de fond
+        // transition de fond FF
         loaded_first = true;
     }
 
@@ -221,7 +202,7 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
     {
         Level& lvl = (*glob_blob::levels.find(glob_blob::current_level)).second; // le niveau est bien chargé normalement à partir de ce point là sinon ça crash :)
 
-        CMatrice& mat = lvl.mat; // alias
+        CMatrice& mat = lvl.mat; // alias de la matrice niveau
 
         size_t num_rows = mat.size();
         size_t num_cols = mat[0].size();
@@ -280,7 +261,7 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
             window << txt;
             return;
         }
-
+        // Détecter et gérer les explosions de bombes horizontales et verticales
         explosion explosion_v = detectionExplositionUneBombeVerticale(mat);
         explosion explosion_h = detectionExplositionUneBombeHorizontale(mat);
 
@@ -289,8 +270,6 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
             for (size_t col = 0; col < num_cols; ++col)
             {
                 unsigned short nb_bonbon = mat[row][col];
-
-                // if second click
 
                 int x = get_scale_position(board_top_left.getX(),col);
                 int y = get_scale_position(board_top_left.getY(),row);
@@ -309,6 +288,7 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 
                 BonBon_T t_bonbon = static_cast<BonBon_T>(nb_bonbon);
 
+                // Définir les couleurs de la cellule en fonction du type de bonbon
                 switch(t_bonbon)
                 {
                 case BonBon_T::NoDraw:
@@ -336,6 +316,8 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                     rect_color = nsGraphics::KYellow;
                     original_color = nsGraphics::KYellow;
                     break;
+                default:
+                    break;
                 }
 
                 // mouvements
@@ -349,7 +331,7 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 
                 if (!glob_blob::is_swapping && reset_anim)
                 {
-                    // reset animations
+                    // Réinitialisation des animations
                     float st = animations::fast_float_lerp(id_move_x, false, 0.f, 1.f, 1.f);
                     animations::fast_float_lerp(id_move_y, false, 0.f, 1.f, 1.f);
 
@@ -359,6 +341,7 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 
                 if (reset_anim_whole)
                 {
+                    // Réinitialisation des animations
                     float xt = animations::fast_float_lerp(h_swap_id,false,0.f, 1.f,100.f);
                     float wt = animations::fast_float_lerp(dissapear_id_h,false,0.f, 0.5f,100.f);
 
@@ -368,7 +351,7 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                     }
                 }
 
-                // animation du cube en mouvement horizontale
+                // Animation du rectangle en mouvement horizontale
                 if (glob_blob::is_swap_horizontal)
                 {
                     float anim_stage = animations::fast_float_lerp(id_move_x, glob_blob::is_swapping, 0.f, 1.f, 0.08f);
@@ -392,7 +375,7 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                         glob_blob::is_swap_horizontal = false;
                     }
                 }
-                // animation du cube en mouvement vertical
+                // Animation du rectangle en mouvement vertical
                 if (glob_blob::is_swap_vertical)
                 {
                     float anim_stage = animations::fast_float_lerp(id_move_y, glob_blob::is_swapping, 0.f, 1.f, 0.08f);
@@ -420,10 +403,9 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                 float anim_stage = animations::fast_float_lerp(h_swap_id,explosion_h.did_explode,0.f, 1.f,0.04f);
                 float d_stage = animations::fast_float_lerp(dissapear_id_h,explosion_h.did_explode,0.f, 0.5f,0.08f);
 
-                // horizontal pushing
+                // Mouvement horizontale sur les colonnes concernées
                 if (explosion_h.did_explode)
                 {
-                    // push the lines
                     for (size_t nbcol = explosion_h.start_col; nbcol < explosion_h.start_col + explosion_h.explosion_num; ++nbcol)
                     {
                         for (size_t nbligne = explosion_h.start_row; nbligne>0; --nbligne)
@@ -455,8 +437,6 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
 
 
                 nsShape::Rectangle rect({x,y},{x_end,y_end}, rect_color);
-
-
                 rect.setFillColor(rect_color);
 
                 window << rect;
@@ -471,6 +451,7 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
     case GameState::IN_EDITOR:
         break;
     };
+
 
     window << main_title;
 

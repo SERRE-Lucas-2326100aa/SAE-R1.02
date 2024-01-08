@@ -1,0 +1,100 @@
+\hypertarget{level__manager_8cpp}{}\doxysection{src/level\+\_\+manager.cpp File Reference}
+\label{level__manager_8cpp}\index{src/level\_manager.cpp@{src/level\_manager.cpp}}
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$mingl/shape/circle.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}hdrs/level\+\_\+manager.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hdrs/globals.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mingl/shape/rectangle.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mingl/gui/text.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hdrs/animations.\+h\char`\"{}}\newline
+Include dependency graph for level\+\_\+manager.\+cpp\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{level__manager_8cpp_affea47520085b9f91b2aa5898a3e4003}{get\+\_\+scale\+\_\+position}} (const int \&start\+\_\+x, const int \&pos)
+\item 
+\mbox{\hyperlink{structexplosion}{explosion}} \mbox{\hyperlink{level__manager_8cpp_a888cef391a7eefbc994c55021fdef3c9}{detection\+Explosition\+Une\+Bombe\+Horizontale}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&)
+\item 
+\mbox{\hyperlink{structexplosion}{explosion}} \mbox{\hyperlink{level__manager_8cpp_a7234ff82d42096806d9e13184fde3cb8}{detection\+Explosition\+Une\+Bombe\+Verticale}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&)
+\item 
+void \mbox{\hyperlink{level__manager_8cpp_a5ca5a1d2987f121b68d2e209aff2d5f3}{explosition\+Une\+Bombe\+Horizontale}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat, const size\+\_\+t \&num\+Ligne, const size\+\_\+t \&num\+Colonne, const size\+\_\+t \&combien)
+\item 
+void \mbox{\hyperlink{level__manager_8cpp_aee64509d03098c47a6bedc2467c69fed}{explosition\+Une\+Bombe\+Verticale}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat, const size\+\_\+t \&num\+Ligne, const size\+\_\+t \&num\+Col, const size\+\_\+t \&cmb)
+\item 
+void \mbox{\hyperlink{level__manager_8cpp_ab4407fd2ad57504716cb4fad9d62625c}{game\+\_\+move}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat, int \&new\+\_\+row, int \&new\+\_\+col)
+\item 
+void \mbox{\hyperlink{level__manager_8cpp_af6032074e6dd231ebe426b9fe57dc651}{show\+\_\+mat}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat)
+\item 
+void \mbox{\hyperlink{level__manager_8cpp_a1b823692784704ca8005546a76a06dab}{generer\+\_\+bonbons}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{level__manager_8cpp_a888cef391a7eefbc994c55021fdef3c9}\label{level__manager_8cpp_a888cef391a7eefbc994c55021fdef3c9}} 
+\index{level\_manager.cpp@{level\_manager.cpp}!detectionExplositionUneBombeHorizontale@{detectionExplositionUneBombeHorizontale}}
+\index{detectionExplositionUneBombeHorizontale@{detectionExplositionUneBombeHorizontale}!level\_manager.cpp@{level\_manager.cpp}}
+\doxysubsubsection{\texorpdfstring{detectionExplositionUneBombeHorizontale()}{detectionExplositionUneBombeHorizontale()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structexplosion}{explosion}} detection\+Explosition\+Une\+Bombe\+Horizontale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 1
+\mbox{\Hypertarget{level__manager_8cpp_a7234ff82d42096806d9e13184fde3cb8}\label{level__manager_8cpp_a7234ff82d42096806d9e13184fde3cb8}} 
+\index{level\_manager.cpp@{level\_manager.cpp}!detectionExplositionUneBombeVerticale@{detectionExplositionUneBombeVerticale}}
+\index{detectionExplositionUneBombeVerticale@{detectionExplositionUneBombeVerticale}!level\_manager.cpp@{level\_manager.cpp}}
+\doxysubsubsection{\texorpdfstring{detectionExplositionUneBombeVerticale()}{detectionExplositionUneBombeVerticale()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structexplosion}{explosion}} detection\+Explosition\+Une\+Bombe\+Verticale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 2
+Here is the caller graph for this function\+:
+% FIG 3
+\mbox{\Hypertarget{level__manager_8cpp_a5ca5a1d2987f121b68d2e209aff2d5f3}\label{level__manager_8cpp_a5ca5a1d2987f121b68d2e209aff2d5f3}} 
+\index{level\_manager.cpp@{level\_manager.cpp}!explositionUneBombeHorizontale@{explositionUneBombeHorizontale}}
+\index{explositionUneBombeHorizontale@{explositionUneBombeHorizontale}!level\_manager.cpp@{level\_manager.cpp}}
+\doxysubsubsection{\texorpdfstring{explositionUneBombeHorizontale()}{explositionUneBombeHorizontale()}}
+{\footnotesize\ttfamily void explosition\+Une\+Bombe\+Horizontale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat,  }\item[{const size\+\_\+t \&}]{num\+Ligne,  }\item[{const size\+\_\+t \&}]{num\+Colonne,  }\item[{const size\+\_\+t \&}]{combien }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 4
+\mbox{\Hypertarget{level__manager_8cpp_aee64509d03098c47a6bedc2467c69fed}\label{level__manager_8cpp_aee64509d03098c47a6bedc2467c69fed}} 
+\index{level\_manager.cpp@{level\_manager.cpp}!explositionUneBombeVerticale@{explositionUneBombeVerticale}}
+\index{explositionUneBombeVerticale@{explositionUneBombeVerticale}!level\_manager.cpp@{level\_manager.cpp}}
+\doxysubsubsection{\texorpdfstring{explositionUneBombeVerticale()}{explositionUneBombeVerticale()}}
+{\footnotesize\ttfamily void explosition\+Une\+Bombe\+Verticale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat,  }\item[{const size\+\_\+t \&}]{num\+Ligne,  }\item[{const size\+\_\+t \&}]{num\+Col,  }\item[{const size\+\_\+t \&}]{cmb }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 5
+\mbox{\Hypertarget{level__manager_8cpp_ab4407fd2ad57504716cb4fad9d62625c}\label{level__manager_8cpp_ab4407fd2ad57504716cb4fad9d62625c}} 
+\index{level\_manager.cpp@{level\_manager.cpp}!game\_move@{game\_move}}
+\index{game\_move@{game\_move}!level\_manager.cpp@{level\_manager.cpp}}
+\doxysubsubsection{\texorpdfstring{game\_move()}{game\_move()}}
+{\footnotesize\ttfamily void game\+\_\+move (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat,  }\item[{int \&}]{new\+\_\+row,  }\item[{int \&}]{new\+\_\+col }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 6
+Here is the caller graph for this function\+:
+% FIG 7
+\mbox{\Hypertarget{level__manager_8cpp_a1b823692784704ca8005546a76a06dab}\label{level__manager_8cpp_a1b823692784704ca8005546a76a06dab}} 
+\index{level\_manager.cpp@{level\_manager.cpp}!generer\_bonbons@{generer\_bonbons}}
+\index{generer\_bonbons@{generer\_bonbons}!level\_manager.cpp@{level\_manager.cpp}}
+\doxysubsubsection{\texorpdfstring{generer\_bonbons()}{generer\_bonbons()}}
+{\footnotesize\ttfamily void generer\+\_\+bonbons (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 8
+\mbox{\Hypertarget{level__manager_8cpp_affea47520085b9f91b2aa5898a3e4003}\label{level__manager_8cpp_affea47520085b9f91b2aa5898a3e4003}} 
+\index{level\_manager.cpp@{level\_manager.cpp}!get\_scale\_position@{get\_scale\_position}}
+\index{get\_scale\_position@{get\_scale\_position}!level\_manager.cpp@{level\_manager.cpp}}
+\doxysubsubsection{\texorpdfstring{get\_scale\_position()}{get\_scale\_position()}}
+{\footnotesize\ttfamily int get\+\_\+scale\+\_\+position (\begin{DoxyParamCaption}\item[{const int \&}]{start\+\_\+x,  }\item[{const int \&}]{pos }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 9
+\mbox{\Hypertarget{level__manager_8cpp_af6032074e6dd231ebe426b9fe57dc651}\label{level__manager_8cpp_af6032074e6dd231ebe426b9fe57dc651}} 
+\index{level\_manager.cpp@{level\_manager.cpp}!show\_mat@{show\_mat}}
+\index{show\_mat@{show\_mat}!level\_manager.cpp@{level\_manager.cpp}}
+\doxysubsubsection{\texorpdfstring{show\_mat()}{show\_mat()}}
+{\footnotesize\ttfamily void show\+\_\+mat (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat }\end{DoxyParamCaption})}
+

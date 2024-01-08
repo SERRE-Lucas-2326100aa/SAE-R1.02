@@ -1,0 +1,33 @@
+\hypertarget{animations_8h}{}\doxysection{hdrs/animations.h File Reference}
+\label{animations_8h}\index{hdrs/animations.h@{hdrs/animations.h}}
+{\ttfamily \#include \char`\"{}mingl/graphics/rgbacolor.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+Include dependency graph for animations.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespaceanimations}{animations}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{namespaceanimations_a6e4cf800b259da30aaa17ba400e2853b}{animations\+::fast\+\_\+float\+\_\+lerp}} (std\+::string \&id, bool state, float min, float max, float speed)
+\item 
+int \mbox{\hyperlink{namespaceanimations_aef797821c3230bf131d31231600926ae}{animations\+::fast\+\_\+int\+\_\+lerp}} (std\+::string \&id, bool state, int min, int max, float speed)
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \mbox{\hyperlink{namespaceanimations_a005a32f860e5e4988a17106a24221009}{animations\+::lerp}} (T a, T b, float t)
+\item 
+ns\+Graphics\+::\+RGBAcolor \mbox{\hyperlink{namespaceanimations_a320eb56331dceb8bf73f359a5f554b39}{animations\+::lerp\+\_\+color}} (ns\+Graphics\+::\+RGBAcolor start, ns\+Graphics\+::\+RGBAcolor end, float stage)
+\item 
+float \mbox{\hyperlink{namespaceanimations_a7708264eb1c6654bda9a3111b7455ff3}{animations\+::ease\+\_\+in\+\_\+sine}} (float t)
+\item 
+{\footnotesize template$<$typename N $>$ }\\N \mbox{\hyperlink{namespaceanimations_a774b82b3ce17a09129ff3f5722c01f42}{animations\+::ease\+\_\+in\+\_\+cubic}} (N t)
+\item 
+{\footnotesize template$<$typename N $>$ }\\N \mbox{\hyperlink{namespaceanimations_a003ba2f8f01635939b10197c67bba596}{animations\+::ease\+\_\+out\+\_\+sine}} (N t)
+\item 
+{\footnotesize template$<$typename N $>$ }\\N \mbox{\hyperlink{namespaceanimations_aa93d4c7d6bbd1d5b6fdbf8c651cbdc52}{animations\+::ease\+\_\+out\+\_\+cubic}} (N t)
+\end{DoxyCompactItemize}

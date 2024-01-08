@@ -1,0 +1,157 @@
+\hypertarget{main_8cpp}{}\doxysection{main.\+cpp File Reference}
+\label{main_8cpp}\index{main.cpp@{main.cpp}}
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include \char`\"{}Min\+GL2\+\_\+\+IUT\+\_\+\+AIX/include/mingl/mingl.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hdrs/globals.\+h\char`\"{}}\newline
+Include dependency graph for main.\+cpp\+:
+% FIG 0
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{main_8cpp_a69c339b2966791489487938c49401cf3}{FPS\+\_\+\+LIMIT}}~60
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8cpp_a5ca5a1d2987f121b68d2e209aff2d5f3}{explosition\+Une\+Bombe\+Horizontale}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat, const size\+\_\+t \&num\+Ligne, const size\+\_\+t \&num\+Colonne, const size\+\_\+t \&combien)
+\item 
+void \mbox{\hyperlink{main_8cpp_aee64509d03098c47a6bedc2467c69fed}{explosition\+Une\+Bombe\+Verticale}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat, const size\+\_\+t \&num\+Ligne, const size\+\_\+t \&num\+Col, const size\+\_\+t \&cmb)
+\item 
+void \mbox{\hyperlink{main_8cpp_a1b823692784704ca8005546a76a06dab}{generer\+\_\+bonbons}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat)
+\item 
+void \mbox{\hyperlink{main_8cpp_af6032074e6dd231ebe426b9fe57dc651}{show\+\_\+mat}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat)
+\item 
+\mbox{\hyperlink{structexplosion}{explosion}} \mbox{\hyperlink{main_8cpp_ac47842a1523e29070a6ffd099a76a318}{detection\+Explosition\+Une\+Bombe\+Verticale}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat)
+\item 
+\mbox{\hyperlink{structexplosion}{explosion}} \mbox{\hyperlink{main_8cpp_a302e22899f705db863aa528e4842d980}{detection\+Explosition\+Une\+Bombe\+Horizontale}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat)
+\item 
+void \mbox{\hyperlink{main_8cpp_a09dcafc641638618fd142bdd6280da3d}{reset\+\_\+crusor\+\_\+clicks}} ()
+\item 
+void \mbox{\hyperlink{main_8cpp_ab4407fd2ad57504716cb4fad9d62625c}{game\+\_\+move}} (\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&mat, int \&new\+\_\+row, int \&new\+\_\+col)
+\item 
+void \mbox{\hyperlink{main_8cpp_a4500d7a2ede04114a56a57b27a0c3534}{mouse\+\_\+events}} (Min\+GL \&window)
+\item 
+int \mbox{\hyperlink{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const unsigned short \mbox{\hyperlink{main_8cpp_a2870a68c7846cffe8cba624f1c202c71}{KAIgnorer}} = static\+\_\+cast$<$unsigned short$>$(\mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33afd038fc7f319e48f3115d92bf5bdbef9}{Bon\+Bon\+\_\+\+T\+::\+Ignore}})
+\item 
+const unsigned short \mbox{\hyperlink{main_8cpp_af21869a58188b529e50f1f72e3de2184}{KAPas\+Dessiner\+Et\+Ignorer}} = static\+\_\+cast$<$unsigned short$>$(\mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33add349546b418e50c23e2d88a3342a68f}{Bon\+Bon\+\_\+\+T\+::\+No\+Draw}})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{main_8cpp_a69c339b2966791489487938c49401cf3}\label{main_8cpp_a69c339b2966791489487938c49401cf3}} 
+\index{main.cpp@{main.cpp}!FPS\_LIMIT@{FPS\_LIMIT}}
+\index{FPS\_LIMIT@{FPS\_LIMIT}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{FPS\_LIMIT}{FPS\_LIMIT}}
+{\footnotesize\ttfamily \#define FPS\+\_\+\+LIMIT~60}
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8cpp_a302e22899f705db863aa528e4842d980}\label{main_8cpp_a302e22899f705db863aa528e4842d980}} 
+\index{main.cpp@{main.cpp}!detectionExplositionUneBombeHorizontale@{detectionExplositionUneBombeHorizontale}}
+\index{detectionExplositionUneBombeHorizontale@{detectionExplositionUneBombeHorizontale}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{detectionExplositionUneBombeHorizontale()}{detectionExplositionUneBombeHorizontale()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structexplosion}{explosion}} detection\+Explosition\+Une\+Bombe\+Horizontale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 1
+\mbox{\Hypertarget{main_8cpp_ac47842a1523e29070a6ffd099a76a318}\label{main_8cpp_ac47842a1523e29070a6ffd099a76a318}} 
+\index{main.cpp@{main.cpp}!detectionExplositionUneBombeVerticale@{detectionExplositionUneBombeVerticale}}
+\index{detectionExplositionUneBombeVerticale@{detectionExplositionUneBombeVerticale}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{detectionExplositionUneBombeVerticale()}{detectionExplositionUneBombeVerticale()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structexplosion}{explosion}} detection\+Explosition\+Une\+Bombe\+Verticale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 2
+Here is the caller graph for this function\+:
+% FIG 3
+\mbox{\Hypertarget{main_8cpp_a5ca5a1d2987f121b68d2e209aff2d5f3}\label{main_8cpp_a5ca5a1d2987f121b68d2e209aff2d5f3}} 
+\index{main.cpp@{main.cpp}!explositionUneBombeHorizontale@{explositionUneBombeHorizontale}}
+\index{explositionUneBombeHorizontale@{explositionUneBombeHorizontale}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{explositionUneBombeHorizontale()}{explositionUneBombeHorizontale()}}
+{\footnotesize\ttfamily void explosition\+Une\+Bombe\+Horizontale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat,  }\item[{const size\+\_\+t \&}]{num\+Ligne,  }\item[{const size\+\_\+t \&}]{num\+Colonne,  }\item[{const size\+\_\+t \&}]{combien }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 4
+\mbox{\Hypertarget{main_8cpp_aee64509d03098c47a6bedc2467c69fed}\label{main_8cpp_aee64509d03098c47a6bedc2467c69fed}} 
+\index{main.cpp@{main.cpp}!explositionUneBombeVerticale@{explositionUneBombeVerticale}}
+\index{explositionUneBombeVerticale@{explositionUneBombeVerticale}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{explositionUneBombeVerticale()}{explositionUneBombeVerticale()}}
+{\footnotesize\ttfamily void explosition\+Une\+Bombe\+Verticale (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat,  }\item[{const size\+\_\+t \&}]{num\+Ligne,  }\item[{const size\+\_\+t \&}]{num\+Col,  }\item[{const size\+\_\+t \&}]{cmb }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 5
+\mbox{\Hypertarget{main_8cpp_ab4407fd2ad57504716cb4fad9d62625c}\label{main_8cpp_ab4407fd2ad57504716cb4fad9d62625c}} 
+\index{main.cpp@{main.cpp}!game\_move@{game\_move}}
+\index{game\_move@{game\_move}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{game\_move()}{game\_move()}}
+{\footnotesize\ttfamily void game\+\_\+move (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat,  }\item[{int \&}]{new\+\_\+row,  }\item[{int \&}]{new\+\_\+col }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 6
+Here is the caller graph for this function\+:
+% FIG 7
+\mbox{\Hypertarget{main_8cpp_a1b823692784704ca8005546a76a06dab}\label{main_8cpp_a1b823692784704ca8005546a76a06dab}} 
+\index{main.cpp@{main.cpp}!generer\_bonbons@{generer\_bonbons}}
+\index{generer\_bonbons@{generer\_bonbons}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{generer\_bonbons()}{generer\_bonbons()}}
+{\footnotesize\ttfamily void generer\+\_\+bonbons (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 8
+\mbox{\Hypertarget{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\label{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{main.cpp@{main.cpp}!main@{main}}
+\index{main@{main}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 9
+\mbox{\Hypertarget{main_8cpp_a4500d7a2ede04114a56a57b27a0c3534}\label{main_8cpp_a4500d7a2ede04114a56a57b27a0c3534}} 
+\index{main.cpp@{main.cpp}!mouse\_events@{mouse\_events}}
+\index{mouse\_events@{mouse\_events}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{mouse\_events()}{mouse\_events()}}
+{\footnotesize\ttfamily void mouse\+\_\+events (\begin{DoxyParamCaption}\item[{Min\+GL \&}]{window }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:
+% FIG 10
+Here is the caller graph for this function\+:
+% FIG 11
+\mbox{\Hypertarget{main_8cpp_a09dcafc641638618fd142bdd6280da3d}\label{main_8cpp_a09dcafc641638618fd142bdd6280da3d}} 
+\index{main.cpp@{main.cpp}!reset\_crusor\_clicks@{reset\_crusor\_clicks}}
+\index{reset\_crusor\_clicks@{reset\_crusor\_clicks}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{reset\_crusor\_clicks()}{reset\_crusor\_clicks()}}
+{\footnotesize\ttfamily void reset\+\_\+crusor\+\_\+clicks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the caller graph for this function\+:
+% FIG 12
+\mbox{\Hypertarget{main_8cpp_af6032074e6dd231ebe426b9fe57dc651}\label{main_8cpp_af6032074e6dd231ebe426b9fe57dc651}} 
+\index{main.cpp@{main.cpp}!show\_mat@{show\_mat}}
+\index{show\_mat@{show\_mat}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{show\_mat()}{show\_mat()}}
+{\footnotesize\ttfamily void show\+\_\+mat (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} \&}]{mat }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_8cpp_a2870a68c7846cffe8cba624f1c202c71}\label{main_8cpp_a2870a68c7846cffe8cba624f1c202c71}} 
+\index{main.cpp@{main.cpp}!KAIgnorer@{KAIgnorer}}
+\index{KAIgnorer@{KAIgnorer}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{KAIgnorer}{KAIgnorer}}
+{\footnotesize\ttfamily const unsigned short KAIgnorer = static\+\_\+cast$<$unsigned short$>$(\mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33afd038fc7f319e48f3115d92bf5bdbef9}{Bon\+Bon\+\_\+\+T\+::\+Ignore}})}
+
+\mbox{\Hypertarget{main_8cpp_af21869a58188b529e50f1f72e3de2184}\label{main_8cpp_af21869a58188b529e50f1f72e3de2184}} 
+\index{main.cpp@{main.cpp}!KAPasDessinerEtIgnorer@{KAPasDessinerEtIgnorer}}
+\index{KAPasDessinerEtIgnorer@{KAPasDessinerEtIgnorer}!main.cpp@{main.cpp}}
+\doxysubsubsection{\texorpdfstring{KAPasDessinerEtIgnorer}{KAPasDessinerEtIgnorer}}
+{\footnotesize\ttfamily const unsigned short KAPas\+Dessiner\+Et\+Ignorer = static\+\_\+cast$<$unsigned short$>$(\mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33add349546b418e50c23e2d88a3342a68f}{Bon\+Bon\+\_\+\+T\+::\+No\+Draw}})}
+

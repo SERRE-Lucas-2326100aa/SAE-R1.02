@@ -1,0 +1,134 @@
+\hypertarget{level__manager_8h}{}\doxysection{hdrs/level\+\_\+manager.h File Reference}
+\label{level__manager_8h}\index{hdrs/level\_manager.h@{hdrs/level\_manager.h}}
+
+
+Gestion de niveau/editeur.  
+
+
+{\ttfamily \#include \char`\"{}mingl/mingl.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mingl/transition/transition\+\_\+engine.\+h\char`\"{}}\newline
+Include dependency graph for level\+\_\+manager.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_level}{Level}}
+\item 
+struct \mbox{\hyperlink{struct_game_save}{Game\+Save}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacelevel__manager}{level\+\_\+manager}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} = std\+::vector$<$ std\+::vector$<$ unsigned short $>$ $>$
+\item 
+using \mbox{\hyperlink{level__manager_8h_a6ca7c82410480cc223ba6adbbefde016}{MLevels}} = std\+::map$<$ std\+::string, \mbox{\hyperlink{struct_level}{Level}} $>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33}{Bon\+Bon\+\_\+T}} \+: unsigned short \{ \newline
+\mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33afd038fc7f319e48f3115d92bf5bdbef9}{Ignore}} = 0
+, \mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33add349546b418e50c23e2d88a3342a68f}{No\+Draw}} = 1
+, \mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33abe0117847891591761538a2ed5e4f3e8}{To\+Replace}}
+, \mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33ab078ffd28db767c502ac367053f6e0ac}{START}}
+, \newline
+\mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a502080727251ce1d26b9ecb78df618dd}{Normal\+Bleu}}
+, \mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33abf9b3ac5cadda3c60a7cb6d045c27938}{Normal\+Vert}}
+, \mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a87af8465dfa4ea359d1eac934098eb75}{Normal\+Rouge}}
+, \mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a8d07ce8db0f22ce079ca3e6363f18846}{Normal\+Orange}}
+, \newline
+\mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a26a4b44a837bf97b972628509912b4a5}{MAX}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespacelevel__manager_a44149d743a3b16b842f21e531ba849f4}{level\+\_\+manager\+::dev\+\_\+mode\+\_\+draw}} (Min\+GL \&window, Transition\+Engine \&engine)
+\item 
+\mbox{\hyperlink{struct_level}{Level}} \mbox{\hyperlink{namespacelevel__manager_a02af3af9c75f86e8898f83a220a16d21}{level\+\_\+manager\+::load\+\_\+level}} (const char $\ast$level\+\_\+path, bool full\+\_\+load)
+\item 
+\mbox{\hyperlink{level__manager_8h_a6ca7c82410480cc223ba6adbbefde016}{MLevels}} \mbox{\hyperlink{namespacelevel__manager_adcecb5bd4920b559a738949a3215c57f}{level\+\_\+manager\+::load\+\_\+levels}} (const char $\ast$levels\+\_\+path)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Gestion de niveau/editeur. 
+
+\begin{DoxyAuthor}{Author}
+Ersan MEHMED 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+Décembre 2023 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}\label{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}} 
+\index{level\_manager.h@{level\_manager.h}!CMatrice@{CMatrice}}
+\index{CMatrice@{CMatrice}!level\_manager.h@{level\_manager.h}}
+\doxysubsubsection{\texorpdfstring{CMatrice}{CMatrice}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{level__manager_8h_a65f281ff812f353edd8a58377b3b3239}{CMatrice}} =  std\+::vector$<$std\+::vector$<$unsigned short$>$ $>$}
+
+\mbox{\Hypertarget{level__manager_8h_a6ca7c82410480cc223ba6adbbefde016}\label{level__manager_8h_a6ca7c82410480cc223ba6adbbefde016}} 
+\index{level\_manager.h@{level\_manager.h}!MLevels@{MLevels}}
+\index{MLevels@{MLevels}!level\_manager.h@{level\_manager.h}}
+\doxysubsubsection{\texorpdfstring{MLevels}{MLevels}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{level__manager_8h_a6ca7c82410480cc223ba6adbbefde016}{MLevels}} =  std\+::map$<$std\+::string,\mbox{\hyperlink{struct_level}{Level}}$>$}
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33}\label{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33}} 
+\index{level\_manager.h@{level\_manager.h}!BonBon\_T@{BonBon\_T}}
+\index{BonBon\_T@{BonBon\_T}!level\_manager.h@{level\_manager.h}}
+\doxysubsubsection{\texorpdfstring{BonBon\_T}{BonBon\_T}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33}{Bon\+Bon\+\_\+T}} \+: unsigned short\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Ignore@{Ignore}!level\_manager.h@{level\_manager.h}}\index{level\_manager.h@{level\_manager.h}!Ignore@{Ignore}}}\mbox{\Hypertarget{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33afd038fc7f319e48f3115d92bf5bdbef9}\label{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33afd038fc7f319e48f3115d92bf5bdbef9}} 
+Ignore&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NoDraw@{NoDraw}!level\_manager.h@{level\_manager.h}}\index{level\_manager.h@{level\_manager.h}!NoDraw@{NoDraw}}}\mbox{\Hypertarget{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33add349546b418e50c23e2d88a3342a68f}\label{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33add349546b418e50c23e2d88a3342a68f}} 
+No\+Draw&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ToReplace@{ToReplace}!level\_manager.h@{level\_manager.h}}\index{level\_manager.h@{level\_manager.h}!ToReplace@{ToReplace}}}\mbox{\Hypertarget{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33abe0117847891591761538a2ed5e4f3e8}\label{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33abe0117847891591761538a2ed5e4f3e8}} 
+To\+Replace&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{START@{START}!level\_manager.h@{level\_manager.h}}\index{level\_manager.h@{level\_manager.h}!START@{START}}}\mbox{\Hypertarget{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33ab078ffd28db767c502ac367053f6e0ac}\label{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33ab078ffd28db767c502ac367053f6e0ac}} 
+START&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NormalBleu@{NormalBleu}!level\_manager.h@{level\_manager.h}}\index{level\_manager.h@{level\_manager.h}!NormalBleu@{NormalBleu}}}\mbox{\Hypertarget{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a502080727251ce1d26b9ecb78df618dd}\label{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a502080727251ce1d26b9ecb78df618dd}} 
+Normal\+Bleu&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NormalVert@{NormalVert}!level\_manager.h@{level\_manager.h}}\index{level\_manager.h@{level\_manager.h}!NormalVert@{NormalVert}}}\mbox{\Hypertarget{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33abf9b3ac5cadda3c60a7cb6d045c27938}\label{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33abf9b3ac5cadda3c60a7cb6d045c27938}} 
+Normal\+Vert&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NormalRouge@{NormalRouge}!level\_manager.h@{level\_manager.h}}\index{level\_manager.h@{level\_manager.h}!NormalRouge@{NormalRouge}}}\mbox{\Hypertarget{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a87af8465dfa4ea359d1eac934098eb75}\label{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a87af8465dfa4ea359d1eac934098eb75}} 
+Normal\+Rouge&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NormalOrange@{NormalOrange}!level\_manager.h@{level\_manager.h}}\index{level\_manager.h@{level\_manager.h}!NormalOrange@{NormalOrange}}}\mbox{\Hypertarget{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a8d07ce8db0f22ce079ca3e6363f18846}\label{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a8d07ce8db0f22ce079ca3e6363f18846}} 
+Normal\+Orange&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MAX@{MAX}!level\_manager.h@{level\_manager.h}}\index{level\_manager.h@{level\_manager.h}!MAX@{MAX}}}\mbox{\Hypertarget{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a26a4b44a837bf97b972628509912b4a5}\label{level__manager_8h_adc9b193fed96eac523b7b7424ed81e33a26a4b44a837bf97b972628509912b4a5}} 
+MAX&\\
+\hline
+
+\end{DoxyEnumFields}

@@ -1,0 +1,12 @@
+digraph "mouse_events"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="mouse_events",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="Button::is_in",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_button.html#a75d138f793dae468543d1af6fd230206",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="reset_crusor_clicks",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$main_8cpp.html#a09dcafc641638618fd142bdd6280da3d",tooltip=" "];
+}
