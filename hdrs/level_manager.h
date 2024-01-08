@@ -20,7 +20,6 @@ struct Level
 {
     unsigned int lvl_num;
     unsigned int required_points;
-    bool locked;
     bool is_fully_loaded;
     std::string path;
     CMatrice mat;
@@ -37,7 +36,8 @@ struct GameSave
 enum class BonBon_T : unsigned short
 {
     Ignore = 0,
-    NoDraw,
+    NoDraw = 1,
+    ToReplace,
     START,
     NormalBleu,
     NormalVert,

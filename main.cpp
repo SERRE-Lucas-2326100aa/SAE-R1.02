@@ -42,7 +42,8 @@ MLevels glob_blob::levels;
 chrono::microseconds glob_blob::delta_time;
 unsigned int glob_blob::current_points = 0;
 
-const unsigned short KAIgnorer = 0;
+const unsigned short KAIgnorer = static_cast<unsigned short>(BonBon_T::Ignore);
+const unsigned short KAPasDessinerEtIgnorer = static_cast<unsigned short>(BonBon_T::NoDraw);
 
 //initialisation de la grille de jeu
 
@@ -66,7 +67,8 @@ void generer_bonbons(CMatrice& mat)
     {
         for (size_t col = 0; col < mat[0].size(); ++col)
         {
-            if (mat[ligne][col] == KAIgnorer)
+            BonBon_T type_bonbon = static_cast<BonBon_T>(mat[ligne][col]);
+            if (type_bonbon == BonBon_T::ToReplace)
             {
                 unsigned short random = static_cast<unsigned short>(BonBon_T::START)+1 + rand() %
                                         (static_cast<unsigned short>(BonBon_T::MAX) - static_cast<unsigned short>(BonBon_T::START)-1);
@@ -110,7 +112,7 @@ explosion detectionExplositionUneBombeVerticale(CMatrice& mat)
 
             BonBon_T bonbon = static_cast<BonBon_T>(_case);
 
-            if (bonbon == BonBon_T::Ignore)
+            if (bonbon == BonBon_T::Ignore || bonbon == BonBon_T::NoDraw)
             {
                 continue;
             }
@@ -152,8 +154,10 @@ explosion detectionExplositionUneBombeHorizontale (CMatrice & mat){
     {
         for (size_t numCol = 0; numCol < mat[numLigne].size(); ++numCol)
         {
-            unsigned int _case = mat[numLigne][numCol];
-            if (_case == KAIgnorer)
+            unsigned short _case = mat[numLigne][numCol];
+            BonBon_T bonbon = static_cast<BonBon_T>(_case);
+
+            if (bonbon == BonBon_T::Ignore || bonbon == BonBon_T::NoDraw)
             {
                 continue;
             }
@@ -197,10 +201,18 @@ void explositionUneBombeHorizontale (CMatrice & mat, const size_t & numLigne,
     for (size_t nbcol = numColonne; nbcol < numColonne + combien; ++nbcol){
         for (size_t nbligne = numLigne; nbligne>0; --nbligne){
 
+            unsigned short _case = mat[nbligne][nbcol];
+            BonBon_T bonbon = static_cast<BonBon_T>(_case);
+
+            if (bonbon == BonBon_T::Ignore || bonbon == BonBon_T::NoDraw)
+            {
+                continue;
+            }
+
             mat [nbligne][nbcol] = mat[nbligne-1][nbcol];
 
         }
-        mat [0][nbcol] =  KAIgnorer;
+        mat [0][nbcol] = static_cast<unsigned short>(BonBon_T::ToReplace);
     }
 }
 
@@ -208,14 +220,22 @@ void explositionUneBombeVerticale (CMatrice& mat, const size_t& numLigne,const s
 {
     for (size_t k = numLigne; k < numLigne + combien; ++k)
     {
-       mat[k][numColonne] = KAIgnorer;
+        mat[k][numColonne] = static_cast<unsigned short>(BonBon_T::ToReplace);
     }
 
     for (size_t n = 0; n < combien; ++n)
     {
         for (size_t k = numLigne+(combien-1); k > 0; --k)
         {
-            swap(mat[k][numColonne], mat[k-1][numColonne]);
+            unsigned short _case = mat[k][numColonne];
+            BonBon_T bonbon = static_cast<BonBon_T>(_case);
+
+            if (bonbon == BonBon_T::Ignore || bonbon == BonBon_T::NoDraw)
+            {
+                break;
+            }
+
+            swap(_case, mat[k-1][numColonne]);
         }
     }
 }
@@ -308,7 +328,7 @@ void mouse_events(MinGL& window)
                         {
                             reset_crusor_clicks();
                         }
-                        std::cout << " after " << glob_blob::cursor.click_count << std::endl;
+                        //std::cout << " after " << glob_blob::cursor.click_count << std::endl;
 
                         int clicked_col = (glob_blob::cursor.x- glob_blob::margin*4 - board_top_left.getX()) / (glob_blob::dpi * glob_blob::total_cell_size);
                         int clicked_row = (glob_blob::cursor.y- glob_blob::margin*4 - board_top_left.getY()) / (glob_blob::dpi * glob_blob::total_cell_size);
@@ -320,11 +340,11 @@ void mouse_events(MinGL& window)
                         {
                             if ((std::abs(glob_blob::first_selected_column - clicked_col) <= 1 && std::abs(glob_blob::first_selected_row - clicked_row) <= 1) && // on regarde si la difference entre les 2 cases
                                 (glob_blob::first_selected_column == clicked_col || glob_blob::first_selected_row == clicked_row) && // on compte pas le clique en diagonale
-                                (glob_blob::first_selected_column != clicked_col || glob_blob::first_selected_row != clicked_row)) // on compte pas si c'estt le même, on deselectionne
+                                (glob_blob::first_selected_column != clicked_col || glob_blob::first_selected_row != clicked_row) && // on compte pas si c'estt le même, on deselectionne
+                                (lvl.mat[clicked_row][clicked_col] != KAIgnorer  && lvl.mat[glob_blob::first_selected_row][glob_blob::first_selected_column] != KAIgnorer) &&  // on bouge pas les endroit à ignorer
+                                (lvl.mat[clicked_row][clicked_col] != KAPasDessinerEtIgnorer  && lvl.mat[glob_blob::first_selected_row][glob_blob::first_selected_column] != KAPasDessinerEtIgnorer))
                             {
-                                std::cout << "not diagonal and good, swapping: " <<
-                                    glob_blob::first_selected_column << "= " << clicked_col << " " <<
-                                    glob_blob::first_selected_row << "= " << clicked_row << std::endl;
+                                std::cout << lvl.mat[clicked_row][clicked_col] << std::endl;
 
                                 glob_blob::is_swapping = true;
                                 glob_blob::is_swap_vertical = ((glob_blob::first_selected_row == clicked_row - 1 ||
@@ -335,7 +355,7 @@ void mouse_events(MinGL& window)
                                                                glob_blob::first_selected_column == clicked_col + 1) &&
                                                               glob_blob::first_selected_row == clicked_row);
 
-                                std::cout << glob_blob::is_swap_horizontal << glob_blob::is_swap_vertical << std::endl;
+                                //std::cout << glob_blob::is_swap_horizontal << glob_blob::is_swap_vertical << std::endl;
 
                                 //game_move(lvl.mat, clicked_row, clicked_col);
                             }
@@ -376,16 +396,11 @@ int main(int argc, char* argv[])
 {
     srand(time(nullptr));
 
-    if (argc == 2 && strcmp(argv[1], "dev") == 0)
-    {
-        std::cout << argv[0] << std::endl;
-        glob_blob::is_dev = true;
-    }
+    glob_blob::is_dev = true;
 
     nsGraphics::Vec2D win_size = {1080,720};
     nsGraphics::Vec2D win_pos = {128,128};
 
-    //MinGL window("Number Crush", win_size, {128,128}, nsGraphics::KBlack);
     MinGL window("Number Crush", win_size, win_pos, nsGraphics::KBlack);
 
     //glob_blob::main_window = window;

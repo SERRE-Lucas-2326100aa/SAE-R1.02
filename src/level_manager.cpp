@@ -99,9 +99,22 @@ MLevels level_manager::load_levels(const char* levels_path)
         return level_maps;
     }
 
+    std::vector<std::pair<std::filesystem::path, Level>> temp_vec;
+
     for (const auto& entry : std::filesystem::directory_iterator(game_path))
     {
-        level_maps[entry.path()] = load_level(entry.path().c_str(), false);
+        Level lvl = load_level(entry.path().c_str(), false);
+        temp_vec.push_back({entry.path(), lvl});
+        //level_maps[entry.path()] = load_level(entry.path().c_str(), false);
+    }
+
+    // Sort the vector based on level_num
+    std::sort(temp_vec.begin(), temp_vec.end(),
+              [](const auto& a, const auto& b) { return a.second.lvl_num < b.second.lvl_num; });
+
+    for (const auto& pair : temp_vec)
+    {
+        level_maps[pair.first] = pair.second;
     }
 
     return level_maps;
@@ -180,7 +193,7 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                 line_y += 105;
             }
 
-            Button btne({line_x, line_y}, 200,100, "Niveau " + std::to_string(it->second.lvl_num), nsGraphics::KBlack);
+            Button btne({line_x+(2*cpt), line_y}, 200,100, "Niveau " + std::to_string(it->second.lvl_num), nsGraphics::KBlack);
 
             btne.on_click = [it](){
                 std::cout << " uwu " << it->first << std::endl;
@@ -299,6 +312,10 @@ void level_manager::dev_mode_draw(MinGL& window, TransitionEngine& engine)
                 switch(t_bonbon)
                 {
                 case BonBon_T::NoDraw:
+                    rect_color = nsGraphics::KWhite;
+                    original_color = nsGraphics::KWhite;
+                    break;
+                case BonBon_T::ToReplace:
                 case BonBon_T::Ignore:
                     rect_color = nsGraphics::KTransparent;
                     original_color = nsGraphics::KTransparent;
